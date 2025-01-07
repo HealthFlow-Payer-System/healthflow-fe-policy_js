@@ -154,7 +154,7 @@ class PolicySearcher extends Component {
     canRenew = (policy) => !this.props.renew && canRenewPolicy(this.props.rights, policy)
 
     headers = (filters) => {
-        var h = [
+        const h = [
             "policy.policySummaries.enrollDate",
             "policy.policySummaries.name",
             "policy.policySummaries.effectiveDate",
@@ -166,8 +166,12 @@ class PolicySearcher extends Component {
             "policy.policySummaries.status",
             "policy.policySummaries.value",
             "policy.policySummaries.balance",
-            "policy.policySummaries.validityFrom",
-            "policy.policySummaries.validityTo",
+            filters?.showHistory?.value
+            ? "policy.policySummaries.validityFrom"
+            : null,
+          filters?.showHistory?.value
+            ? "policy.policySummaries.validityTo"
+            : null,
             "policy.policySummaries.openFamily",
             "policy.policySummaries.openNewTab",
             "policy.policySummaries.renew",
@@ -178,7 +182,7 @@ class PolicySearcher extends Component {
     }
 
     sorts = (filters) => {
-        var results = [
+        const results = [
             ['enrollDate', false],
             [this.props.modulesManager.getRef("insuree.FamilyPicker.sort"), true],
             ['effectiveDate', false],
@@ -190,14 +194,14 @@ class PolicySearcher extends Component {
             ['status', true],
             ['value', false],
             null,
-            ['validityFrom', false],
-            ['validityTo', false],
+            filters?.showHistory?.value ? ["validityFrom", false] : null,
+            filters?.showHistory?.value ? ["validityTo", false] : null,
         ];
         return results;
     }
 
     itemFormatters = (filters) => {
-        var formatters = [
+        const formatters = [
             policy => formatDateFromISO(this.props.modulesManager, this.props.intl, policy.enrollDate),
             policy => <PublishedComponent pubRef="insuree.FamilyPicker" value={policy.family} readOnly={true} withLabel={false} />,
             policy => formatDateFromISO(this.props.modulesManager, this.props.intl, policy.effectiveDate),
@@ -209,14 +213,22 @@ class PolicySearcher extends Component {
             policy => <PublishedComponent pubRef="policy.PolicyStatusPicker" value={policy.status} readOnly={true} withLabel={false} />,
             policy => <AmountInput value={policy.value} readOnly={true} />,
             policy => <AmountInput value={policyBalance(policy)} readOnly={true} />,
-            policy => formatDateFromISO(
-                this.props.modulesManager,
-                this.props.intl,
-                policy.validityFrom),
-            policy => formatDateFromISO(
-                this.props.modulesManager,
-                this.props.intl,
-                policy.validityTo),
+            filters?.showHistory?.value
+              ? (policy) =>
+                  formatDateFromISO(
+                    this.props.modulesManager,
+                    this.props.intl,
+                    policy.validityFrom
+                  )
+              : null,
+            filters?.showHistory?.value
+              ? (policy) =>
+                  formatDateFromISO(
+                    this.props.modulesManager,
+                    this.props.intl,
+                    policy.validityTo
+                  )
+              : null,
             policy => {
                 if (!policy.family) return null
                 return (
