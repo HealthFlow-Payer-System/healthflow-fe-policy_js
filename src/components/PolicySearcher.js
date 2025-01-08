@@ -23,11 +23,25 @@ const POLICY_SEARCHER_CONTRIBUTION_KEY = "policy.PolicySearcher";
 
 class PolicySearcher extends Component {
 
+    state = {
+        searchInitiated: false,
+        initialFitlers: this.props.defaultFilters,
+      };
+
     constructor(props) {
         super(props);
         this.rowsPerPageOptions = props.modulesManager.getConf("fe-policy", "policyFilter.rowsPerPageOptions", [10, 20, 50, 100]);
         this.defaultPageSize = props.modulesManager.getConf("fe-policy", "policyFilter.defaultPageSize", 10);
         this.locationLevels = this.props.modulesManager.getConf("fe-location", "location.Location.MaxLevels", 4);
+        this.isDefaultFetchPolicyActivated = this.props.modulesManager.getConf(
+            "fe-policy",
+            "isDefaultFetchPolicyActivated",
+            true
+          );
+    }
+
+    componentDidMount() {
+        this.scheduleCanFetchPolicyDetails();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -37,6 +51,12 @@ class PolicySearcher extends Component {
             this.props.journalize(this.props.mutation);
             this.setState({ reset: this.state.reset + 1 });
         }
+        if (
+            prevState.searchInitiated !== this.state.searchInitiated ||
+            prevState.initialFitlers !== this.state.initialFitlers
+          ) {
+            this.scheduleCanFetchPolicyDetails();
+        }
     }
 
     fetch = (prms) => {
@@ -45,6 +65,22 @@ class PolicySearcher extends Component {
             prms
         )
     }
+
+    canFetchPolicyDetails = () => {
+        if (this.state.searchInitiated === false && !!this.state.initialFitlers) {
+          this.onFiltersApplied(this.state.initialFitlers);
+        }
+      };
+    
+      scheduleCanFetchPolicyDetails = () => {
+        if (this.debounceTimeout) {
+          clearTimeout(this.debounceTimeout);
+        }
+    
+        this.debounceTimeout = setTimeout(() => {
+          this.canFetchPolicyDetails();
+        }, 100);
+      };
 
     rowIdentifier = (r) => r.uuid
 
@@ -225,6 +261,13 @@ class PolicySearcher extends Component {
         return formatters;
     }
 
+    onFiltersApplied = (filters) => {
+        this.setState({
+          searchInitiated: true,
+          filters, // Update the active filters
+        });
+      };
+
     rowDisabled = (selection, i) => !!i.validityTo
     rowLocked = (selection, i) => !!i.clientMutationId
 
@@ -233,6 +276,7 @@ class PolicySearcher extends Component {
             policies, policiesPageInfo, fetchingPolicies, fetchedPolicies, errorPolicies,
             filterPaneContributionsKey, cacheFiltersKey, onDoubleClick
         } = this.props;
+        const { searchInitiated } = this.state;
 
         let count = policiesPageInfo.totalCount;
 
@@ -253,7 +297,7 @@ class PolicySearcher extends Component {
                     rowsPerPageOptions={this.rowsPerPageOptions}
                     defaultPageSize={this.defaultPageSize}
                     defaultOrderBy="-enrollDate"
-                    fetch={this.fetch}
+                    fetch={this.isDefaultFetchPolicyActivated == false  && searchInitiated ? this.fetch : this.isDefaultFetchPolicyActivated == true ? this.fetch : () => {}}
                     rowIdentifier={this.rowIdentifier}
                     filtersToQueryParams={this.filtersToQueryParams}
                     headers={this.headers}
