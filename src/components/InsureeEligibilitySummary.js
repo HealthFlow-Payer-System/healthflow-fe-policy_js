@@ -69,7 +69,10 @@ class InsureeEligibilitySummary extends Component {
     }
 
     componentDidMount(){
-        this.props?.insuree && this.props.fetchEligibility(this.props.insuree.chfId);
+        const chfId = this.props?.insureeEnquiry?.chfId || this.props?.insuree?.chfId;
+        if (chfId) {
+            this.props.fetchEligibility(chfId);
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -79,9 +82,9 @@ class InsureeEligibilitySummary extends Component {
     }
 
     render() {
-        const { classes, insuree, insureeEligibility } = this.props;
-
-        if (!insuree || !insureeEligibility || !this.isEligiblitySummaryEnabled) return null;
+        const { classes, insuree, insureeEnquiry, insureeEligibility } = this.props;
+        const currentInsuree = insureeEnquiry || insuree;
+        if (!currentInsuree || !insureeEligibility || !this.isEligiblitySummaryEnabled) return null;
 
         return (
             <Grid container>
@@ -102,6 +105,7 @@ class InsureeEligibilitySummary extends Component {
 
 const mapStateToProps = state => ({
     insuree: state.insuree.insuree,
+    insureeEnquiry: state?.insuree?.insureeEnquiry,
     fetchingEligibility: state.policy.fetchingInsureeEligibility,
     fetchedEligibility: state.policy.fetchedInsureeEligibility,
     insureeEligibility: state.policy.insureeEligibility,
