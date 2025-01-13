@@ -195,7 +195,7 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
     if (!!this.props.insuree && !!this.props.insuree.chfId) {
       prms.push(`chfId:"${this.props.insuree.chfId}"`);
       return prms;
-    } else if (Boolean(this.props.insureeEnquiry?.chfId)) {
+    } else if (this.props.insureeEnquiry?.chfId) {
       prms.push(`chfId:"${this.props.insureeEnquiry?.chfId}"`);
       return prms;
     } else if (!!this.props.family && !!this.props.family.uuid) {
