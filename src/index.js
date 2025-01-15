@@ -116,7 +116,8 @@ const DEFAULT_CONFIG = {
       text: <FormattedMessage module="policy" id="menu.policies" />,
       icon: <ListAlt />,
       route: "/" + ROUTE_POLICY_POLICIES,
-      filter: rights => rights.includes(RIGHT_POLICY)
+      filter: rights => rights.includes(RIGHT_POLICY),
+      id: 'insuree.policies'
     },
   ],
   "insuree.EnquiryDialog": [FamilyOrInsureePoliciesSummary, InsureeEligibilityEnquiry, InsureeEligibilitySummary],
