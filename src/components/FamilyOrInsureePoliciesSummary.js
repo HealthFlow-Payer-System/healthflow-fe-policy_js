@@ -195,6 +195,9 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
     if (!!this.props.insuree && !!this.props.insuree.chfId) {
       prms.push(`chfId:"${this.props.insuree.chfId}"`);
       return prms;
+    } else if (this.props.insureeEnquiry?.chfId) {
+      prms.push(`chfId:"${this.props.insureeEnquiry?.chfId}"`);
+      return prms;
     } else if (!!this.props.family && !!this.props.family.uuid) {
       prms.push(`familyUuid:"${this.props.family.uuid}"`);
       return prms;
@@ -356,12 +359,17 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
       errorPolicies,
       family,
       insuree,
+      insureeEnquiry,
       readOnly,
       className,
       hideAddPolicyButton = false,
       disableSelection,
     } = this.props;
-    if ((!family || !family.uuid) && (!insuree || !insuree.uuid)) {
+    if ((!family || !family.uuid) && (!insuree || !insuree.uuid) && (!insureeEnquiry?.uuid))  {
+      console.error(
+        "FamilyOrInsureePoliciesSummary: No valid family, insuree, or insureeEnquiry found. " +
+          "Component will not render."
+      );
       return null;
     }
 
@@ -450,6 +458,7 @@ const mapStateToProps = (state) => ({
   pageInfo: state.policy.policiesPageInfo,
   errorPolicies: state.policy.errorPolicies,
   family: state.insuree.family || {},
+  insureeEnquiry: state?.insuree?.insureeEnquiry,
   insuree: state.insuree.insuree,
   confirmed: state.core.confirmed,
   submittingMutation: state.policy.submittingMutation,
