@@ -146,7 +146,7 @@ class PolicyForm extends Component {
             newPolicy: !this.props.renew,
             renew: false,
           },
-          e => { if (policy.stage === POLICY_STAGE_RENEW) { this.props.fetchPolicyValues(policy, years) } }
+          e => { if (policy.stage === POLICY_STAGE_RENEW) { this.props.fetchPolicyValues(policy) } }
          
         );
       }
