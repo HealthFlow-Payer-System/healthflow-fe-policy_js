@@ -250,7 +250,8 @@ class PolicyForm extends Component {
     if (!this.state.policy.startDate) return false;
     if (!this.state.policy.expiryDate) return false;
     if (this.state.policy.product.ageMaximal != null && this.state.policy.product.ageMinimal != null) {
-      if (Age < this.state.policy.product.ageMinimal || Age > this.state.policy.product.ageMaximal) {
+      const age = this.verifyAge(this.state.dob)
+      if (age < this.state.policy.product.ageMinimal || age > this.state.policy.product.ageMaximal) {
         return false;
       }
     } else if (this.state.policy.product.ageMinimal == null && this.state.policy.product.ageMaximal != null && Age >= this.state.policy.product.ageMaximal) {
