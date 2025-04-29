@@ -244,7 +244,6 @@ class PolicyForm extends Component {
   }
 
   canSave = () => {
-    console.log(this.state.policy, 'state');
     if (!this.state.policy.family) return false;
     if (!this.state.policy.product) return false;
     if (!this.state.policy.enrollDate) return false;
@@ -306,7 +305,6 @@ class PolicyForm extends Component {
       !rights.includes(RIGHT_POLICY_EDIT) ||
       (!!policy.status && policy.status !== POLICY_STATUS_IDLE) ||
       !!policy.validityTo;
-    console.log('new');
     return (
       <Fragment>
         <Helmet
