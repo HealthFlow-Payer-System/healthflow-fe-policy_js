@@ -244,6 +244,7 @@ class PolicyForm extends Component {
   }
 
   canSave = () => {
+    console.log(this.state.policy, 'state');
     if (!this.state.policy.family) return false;
     if (!this.state.policy.product) return false;
     if (!this.state.policy.enrollDate) return false;
@@ -251,7 +252,9 @@ class PolicyForm extends Component {
     if (!this.state.policy.expiryDate) return false;
     if (this.state.policy.product.ageMaximal != null && this.state.policy.product.ageMinimal != null) {
       const age = this.verifyAge(this.state.dob)
-      if (age < this.state.policy.product.ageMinimal || age > this.state.policy.product.ageMaximal) {
+      const { ageMinimal, ageMaximal } = this.state.policy.product;
+      if (!(ageMinimal === 0 && ageMaximal === 0) && 
+          (age < ageMinimal || age > ageMaximal)) {
         return false;
       }
     } else if (this.state.policy.product.ageMinimal == null && this.state.policy.product.ageMaximal != null && Age >= this.state.policy.product.ageMaximal) {
@@ -303,6 +306,7 @@ class PolicyForm extends Component {
       !rights.includes(RIGHT_POLICY_EDIT) ||
       (!!policy.status && policy.status !== POLICY_STATUS_IDLE) ||
       !!policy.validityTo;
+    console.log('new');
     return (
       <Fragment>
         <Helmet
