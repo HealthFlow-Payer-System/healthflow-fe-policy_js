@@ -139,5 +139,14 @@
   "policy.PolicyRenewalsReport.sorting.R": "By receipt number",
   "policy.PolicyRenewalsReport.sorting.O": "By enrollment officer",
   "policy.dispatchExpiryDate.message": "Your policy has been registered with this expiry date: {label}",
-  "policy.dispatchExpiryDate.title":  "Policy expiry date "
+  "policy.dispatchExpiryDate.title": "Policy expiry date ",
+  "policy.gql_query_policies_perms": "Policy | Query Policies",
+  "policy.gql_query_policies_by_insuree_perms": "Policy | Query Policies By Insuree",
+  "policy.gql_query_policies_by_family_perms": "Policy | Query Policies By Family",
+  "policy.gql_query_eligibilities_perms": "Policy | Query Eligibilities",
+  "policy.gql_mutation_create_policies_perms": "Policy | Mutation Create Policies",
+  "policy.gql_mutation_renew_policies_perms": "Policy | Mutation Renew Policies",
+  "policy.gql_mutation_edit_policies_perms": "Policy | Mutation Edit Policies",
+  "policy.gql_mutation_suspend_policies_perms": "Policy | Mutation Suspend Policies",
+  "policy.gql_mutation_delete_policies_perms": "Policy | Mutation Delete Policies"
 }
