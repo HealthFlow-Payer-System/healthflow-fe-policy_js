@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import { Paper } from "@material-ui/core";
+import { withTheme, withStyles } from "@mui/styles";
+import { Paper } from "@mui/material";
 import InsureeServiceEligibility from "./InsureeServiceEligibility";
 import InsureeItemEligibility from "./InsureeItemEligibility";
 

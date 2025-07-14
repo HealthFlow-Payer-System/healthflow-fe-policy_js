@@ -1,5 +1,5 @@
 import React from "react";
-import { ListAlt } from "@material-ui/icons";
+import { ListAlt } from "@mui/icons-material";
 import PolicyOfficerPicker from "./pickers/PolicyOfficerPicker";
 import PolicyStagePicker from "./pickers/PolicyStagePicker";
 import PolicyStatusPicker from "./pickers/PolicyStatusPicker";

@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import { PublishedComponent, useModulesManager, useTranslations, ConstantBasedPicker } from "@openimis/fe-core";
 import React from "react";
 import { POLICY_RENEWALS_REPORT_SORTING_CRITERIA } from "../constants";

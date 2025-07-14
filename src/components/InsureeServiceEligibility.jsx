@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import { Box, Grid, Typography } from "@material-ui/core";
+import { withTheme, withStyles } from "@mui/styles";
+import { Box, Grid, Typography } from "@mui/material";
 import { FormattedMessage, ProgressOrError, PublishedComponent, withModulesManager } from "@openimis/fe-core";
 import {fetchServiceEligibility, serviceEligibilityClear} from "../actions";
 import Eligibility from "./Eligibility";

@@ -2,13 +2,13 @@ import React, { Component, Fragment } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { injectIntl } from 'react-intl';
-import { IconButton, Tooltip } from "@material-ui/core";
+import { IconButton, Tooltip } from "@mui/material";
 import {
     People as PeopleIcon, Tab as TabIcon,
     Autorenew as RenewIcon,
     Delete as DeleteIcon,
     Pause as SuspendIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import {
     withModulesManager, formatMessageWithValues, formatDateFromISO, formatMessage,
     withHistory, historyPush, coreConfirm, journalize,

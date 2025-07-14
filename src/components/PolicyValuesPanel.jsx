@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import { Paper, Grid, Typography, Divider } from "@material-ui/core";
+import { withTheme, withStyles } from "@mui/styles";
+import { Paper, Grid, Typography, Divider } from "@mui/material";
 import {
   FormattedMessage,
   Contributions,

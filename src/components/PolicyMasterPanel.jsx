@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { withTheme, withStyles } from "@mui/styles";
 import { injectIntl } from "react-intl";
 import {
   Paper,
@@ -11,12 +11,12 @@ import {
   IconButton,
   FormControlLabel,
   Checkbox,
-} from "@material-ui/core";
+} from "@mui/material";
 import {
   Autorenew as RenewIcon,
   Delete as DeleteIcon,
   Pause as SuspendIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import {
   formatMessage,
   formatMessageWithValues,

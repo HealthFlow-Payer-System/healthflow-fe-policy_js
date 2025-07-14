@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import _debounce from "lodash/debounce";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { withTheme, withStyles } from "@mui/styles";
 import { injectIntl } from "react-intl";
-import { Checkbox, FormControlLabel, Grid } from "@material-ui/core";
+import { Checkbox, FormControlLabel, Grid } from "@mui/material";
 import {
   withModulesManager,
   formatMessage,

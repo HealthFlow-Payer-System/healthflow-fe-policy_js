@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { injectIntl } from 'react-intl';
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import { Grid, Paper } from "@material-ui/core";
+import { withTheme, withStyles } from "@mui/styles";
+import { Grid, Paper } from "@mui/material";
 import { Table, FormattedMessage } from "@openimis/fe-core";
 import { fetchEligibility } from "../actions";
 
