@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import moment from "moment";
 
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { withTheme, withStyles } from "@mui/styles";
 
 import {
   coreAlert,
