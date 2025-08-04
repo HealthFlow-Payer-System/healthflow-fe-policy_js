@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import {
   historyPush,
   withModulesManager,
@@ -11,9 +11,9 @@ import {
 } from "@openimis/fe-core";
 import PolicySearcher from "../components/PolicySearcher";
 
-const styles = (theme) => ({
-  page: theme.page,
-});
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page,
+}));
 
 class PoliciesPage extends Component {
   onDoubleClick = (p, newTab = false) => {
@@ -33,14 +33,13 @@ class PoliciesPage extends Component {
   };
 
   render() {
-    const { classes } = this.props;
     return (
-      <div className={classes.page}>
+      <StyledPage>
         <PolicySearcher
           cacheFiltersKey="policyPoliciesPageFiltersCache"
           onDoubleClick={this.onDoubleClick}
         />
-      </div>
+      </StyledPage>
     );
   }
 }
@@ -58,7 +57,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({ clearCurrentPagina
 export default injectIntl(
   withModulesManager(
     withHistory(
-      connect(mapStateToProps, mapDispatchToProps)(withTheme(withStyles(styles)(PoliciesPage)))
+      connect(mapStateToProps, mapDispatchToProps)(PoliciesPage)
     )
   )
 );

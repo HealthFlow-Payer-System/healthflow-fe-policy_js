@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withTheme, withStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import { Paper, Grid, Typography, Divider } from "@mui/material";
 import {
   FormattedMessage,
@@ -9,15 +9,22 @@ import {
   ProgressOrError,
 } from "@openimis/fe-core";
 
-const styles = (theme) => ({
-  paper: theme.paper.paper,
-  tableTitle: theme.table.title,
-  item: theme.paper.item,
-  itemcenter: {
-    ...theme.paper.item,
-    textAlign: "center",
-  },
-});
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  ...theme.paper.paper,
+}));
+
+const StyledTableTitle = styled('div')(({ theme }) => ({
+  ...theme.table.title,
+}));
+
+const StyledItem = styled('div')(({ theme }) => ({
+  ...theme.paper.item,
+}));
+
+const StyledItemCenter = styled('div')(({ theme }) => ({
+  ...theme.paper.item,
+  textAlign: "center",
+}));
 
 const POLICY_POLICY_VALUES_CONTRIBUTION_KEY = "policy.PolicyValues";
 const POLICY_POLICY_VALUES_PANELS_CONTRIBUTION_KEY =
@@ -26,7 +33,6 @@ const POLICY_POLICY_VALUES_PANELS_CONTRIBUTION_KEY =
 class PolicyValuesPanel extends Component {
   render() {
     const {
-      classes,
       title = "Policy.values.title",
       contributionPanelReadOnly = true,
       edited,
@@ -37,18 +43,18 @@ class PolicyValuesPanel extends Component {
     let readOnly = contributionPanelReadOnly;
     return (
       <Grid item xs={12}>
-        <Paper className={classes.paper}>
-          <Grid container className={classes.tableTitle}>
-            <Grid item className={classes.tableTitle}>
+        <StyledPaper>
+          <Grid container component={StyledTableTitle}>
+            <Grid item component={StyledTableTitle}>
               <Typography>
                 <FormattedMessage module="policy" id={title} />
               </Typography>
             </Grid>
           </Grid>
           <Divider />
-          <Grid container className={classes.item}>
+          <Grid container component={StyledItem}>
             <Grid container alignItems="center" justify="start">
-              <Grid item xs={3} className={classes.item}>
+              <Grid item xs={3} component={StyledItem}>
                 <ProgressOrError
                   progress={fetchingPolicyValues}
                   error={errorPolicyValues}
@@ -62,7 +68,7 @@ class PolicyValuesPanel extends Component {
                   />
                 )}
               </Grid>
-              <Grid item xs={3} className={classes.item}>
+              <Grid item xs={3} component={StyledItem}>
                 <AmountInput
                   module="policy"
                   label="Policy.sumPremiums"
@@ -71,7 +77,7 @@ class PolicyValuesPanel extends Component {
                   readOnly={readOnly}
                 />
               </Grid>
-              <Grid item xs={3} className={classes.item}>
+              <Grid item xs={3} component={StyledItem}>
                 <AmountInput
                   module="policy"
                   label="Policy.balance"
@@ -86,40 +92,40 @@ class PolicyValuesPanel extends Component {
                 <Divider style={{ margin: "10px 0" }} />
               </Grid>
               <Grid item xs={3} />
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid item xs={3} component={StyledItemCenter}>
                 <Typography variant="body1">General</Typography>
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid item xs={3} component={StyledItemCenter}>
                 <Typography variant="body1">In-Patient</Typography>
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid item xs={3} component={StyledItemCenter}>
                 <Typography variant="body1">Out-Patient</Typography>
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid item xs={3} component={StyledItemCenter}>
                 <Typography variant="body1">Deductible</Typography>
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid item xs={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimDedG} readOnly={readOnly} />
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid item xs={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimDedIp} readOnly={readOnly} />
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid item xs={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimDedOp} readOnly={readOnly} />
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid item xs={3} component={StyledItemCenter}>
                 <Typography variant="body1">Remunerated Health Care</Typography>
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid item xs={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimRemG} readOnly={readOnly} />
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid item xs={3} component={StyledItemCenter}>
                 <AmountInput
                   value={edited.sunmClaimRemIp}
                   readOnly={readOnly}
                 />
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid item xs={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimRemOp} readOnly={readOnly} />
               </Grid>
             </Grid>
@@ -129,7 +135,7 @@ class PolicyValuesPanel extends Component {
               contributionKey={POLICY_POLICY_VALUES_CONTRIBUTION_KEY}
             />
           </Grid>
-        </Paper>
+        </StyledPaper>
         <Contributions
           {...this.props}
           updateAttribute={this.updateAttribute}
@@ -146,6 +152,4 @@ const mapStateToProps = (state) => ({
   policyValues: state.policy.policyValues,
 });
 
-export default withTheme(
-  withStyles(styles)(connect(mapStateToProps)(PolicyValuesPanel))
-);
+export default connect(mapStateToProps)(PolicyValuesPanel);

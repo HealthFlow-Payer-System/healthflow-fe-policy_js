@@ -1,25 +1,25 @@
 import React, { Component } from "react";
 import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import { Paper } from "@mui/material";
 import InsureeServiceEligibility from "./InsureeServiceEligibility";
 import InsureeItemEligibility from "./InsureeItemEligibility";
 
-const styles = (theme) => ({
-  paper: theme.paper.paper,
-});
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  ...theme.paper.paper,
+}));
 
 class InsureeEligibilityEnquiry extends Component {
   render() {
-    const { classes, insuree } = this.props;
+    const { insuree } = this.props;
     if (!insuree) return null;
     return (
-      <Paper className={classes.paper}>
+      <StyledPaper>
         <InsureeServiceEligibility insuree={insuree} />
         <InsureeItemEligibility insuree={insuree} />
-      </Paper>
+      </StyledPaper>
     );
   }
 }
 
-export default withTheme(withStyles(styles)(injectIntl(InsureeEligibilityEnquiry)));
+export default injectIntl(InsureeEligibilityEnquiry);

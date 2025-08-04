@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { injectIntl } from 'react-intl';
-import { withTheme, withStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import { Grid } from "@mui/material";
 import {
     withModulesManager,
@@ -10,9 +10,9 @@ import {
 } from "@openimis/fe-core";
 import { fetchFamilyOrInsureePolicies } from "../actions";
 
-const styles = theme => ({
-    item: theme.paper.item,
-});
+const StyledItem = styled('div')(({ theme }) => ({
+  ...theme.paper.item,
+}));
 
 class InsureePolicyEligibilitySummary extends Component {
 
@@ -86,14 +86,14 @@ class InsureePolicyEligibilitySummary extends Component {
     }
 
     render() {
-        const { classes, fetchingPolicies, fetchedPolicies, errorPolicies } = this.props;
+        const { fetchingPolicies, fetchedPolicies, errorPolicies } = this.props;
         const { policies } = this.state;
         var activePolicies = !!policies && policies.filter(p => this.activePolicyStatus.some(s => s == p.status));
         return (
             <Fragment>
                 <ProgressOrError progress={fetchingPolicies} error={errorPolicies} />
                 {!!fetchedPolicies && !activePolicies.length &&
-                    <Grid item className={classes.item}>
+                    <Grid item component={StyledItem}>
                         <FormattedMessage module="policy" id="policies.noActivePolicy" />
                     </Grid>
                 }
@@ -102,7 +102,7 @@ class InsureePolicyEligibilitySummary extends Component {
                         <Grid container>
                             {activePolicies.map((activePolicy, i) => (
                                 <Fragment key={`activePolicy-${i}`}>
-                                    <Grid item xs={2} className={classes.item}>
+                                    <Grid item xs={2} component={StyledItem}>
                                         <TextInput
                                             value={activePolicy.productCode}
                                             module="policy"
@@ -110,7 +110,7 @@ class InsureePolicyEligibilitySummary extends Component {
                                             readOnly={true}
                                         />
                                     </Grid>
-                                    <Grid item xs={4} className={classes.item}>
+                                    <Grid item xs={4} component={StyledItem}>
                                         <TextInput
                                             value={activePolicy.productName}
                                             module="policy"
@@ -118,7 +118,7 @@ class InsureePolicyEligibilitySummary extends Component {
                                             readOnly={true}
                                         />
                                     </Grid>
-                                    <Grid item xs={3} className={classes.item}>
+                                    <Grid item xs={3} component={StyledItem}>
                                         <PublishedComponent pubRef="core.DatePicker"
                                             value={activePolicy.expiryDate}
                                             module="policy"
@@ -126,7 +126,7 @@ class InsureePolicyEligibilitySummary extends Component {
                                             readOnly={true}
                                         />
                                     </Grid>
-                                    <Grid item xs={3} className={classes.item}>
+                                    <Grid item xs={3} component={StyledItem}>
                                         <AmountInput
                                             value={(activePolicy.ceiling || 0)}
                                             module="policy"
@@ -157,7 +157,5 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default withModulesManager(connect(mapStateToProps, mapDispatchToProps)(
-    injectIntl(withTheme(
-        withStyles(styles)(InsureePolicyEligibilitySummary)
-    )))
-);
+    injectIntl(InsureePolicyEligibilitySummary)
+));

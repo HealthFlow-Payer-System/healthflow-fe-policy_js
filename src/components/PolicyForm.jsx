@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import moment from "moment";
 
-import { withTheme, withStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 
 import {
   coreAlert,
@@ -30,9 +30,9 @@ import {
 } from "../constants";
 import { policyLabel } from "../utils/utils";
 
-const styles = (theme) => ({
-  page: theme.page,
-});
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page,
+}));
 
 const POLICY_HEAD_PANEL_CONTRIBUTION_KEY = "policy.Policy.headPanel";
 
@@ -381,7 +381,7 @@ export default injectIntl(
         journalize,
         coreAlert,
         fetchFamily,
-      })(withTheme(withStyles(styles)(PolicyForm)))
+      })(PolicyForm)
     )
   )
 );

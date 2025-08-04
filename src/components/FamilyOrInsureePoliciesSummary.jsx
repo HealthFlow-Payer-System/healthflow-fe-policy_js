@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { injectIntl } from "react-intl";
 import clsx from "clsx";
 
-import { withTheme, withStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import { Divider, Grid, Paper, Typography, FormControlLabel, Checkbox, IconButton } from "@mui/material";
 import { Add as AddIcon, Autorenew as RenewIcon, Delete as DeleteIcon, Pause as SuspendIcon } from "@mui/icons-material";
 
@@ -28,26 +28,34 @@ import { fetchFamilyOrInsureePolicies, selectPolicy, deletePolicy, suspendPolicy
 import { RIGHT_POLICY_ADD } from "../constants";
 import { policyLabel, canDeletePolicy, canSuspendPolicy, canRenewPolicy } from "../utils/utils";
 
-const styles = (theme) => ({
-  paper: {
-    ...theme.paper.paper,
-  },
-  paperHeader: {
-    ...theme.paper.header,
-  },
-  tableTitle: theme.table.title,
-  title: {
-    ...theme.table.title,
-    padding: 0,
-  },
-  fab: theme.fab,
-  button: {
-    margin: theme.spacing(1),
-  },
-  item: {
-    padding: theme.spacing(1),
-  },
-});
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  ...theme.paper.paper,
+}));
+
+const StyledPaperHeader = styled('div')(({ theme }) => ({
+  ...theme.paper.header,
+}));
+
+const StyledTableTitle = styled('div')(({ theme }) => ({
+  ...theme.table.title,
+}));
+
+const StyledTitle = styled('div')(({ theme }) => ({
+  ...theme.table.title,
+  padding: 0,
+}));
+
+const StyledFab = styled('div')(({ theme }) => ({
+  ...theme.fab,
+}));
+
+const StyledButton = styled('div')(({ theme }) => ({
+  margin: theme.spacing(1),
+}));
+
+const StyledItem = styled('div')(({ theme }) => ({
+  padding: theme.spacing(1),
+}));
 
 class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
   state = {
@@ -351,7 +359,6 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
   render() {
     const {
       intl,
-      classes,
       rights,
       fetchingPolicies,
       policies,
@@ -388,15 +395,15 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
           ];
 
     return (
-      <Paper className={clsx(classes.paper, className)}>
+      <StyledPaper className={className}>
         <Grid
           container
           justifyContent="space-between"
           alignItems="center"
-          className={clsx(classes.paperHeader, classes.tableTitle)}
+          className={clsx("paperHeader", "tableTitle")}
         >
           <Grid item>
-            <Typography className={classes.title}>{this.header()}</Typography>
+            <StyledTitle>{this.header()}</StyledTitle>
           </Grid>
           <Grid item>
             <Grid container alignItems="center" spacing={3}>
@@ -445,7 +452,7 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
           onChangeRowsPerPage={this.onChangeRowsPerPage}
           rowLocked={this.rowLocked}
         />
-      </Paper>
+      </StyledPaper>
     );
   }
 }
@@ -477,6 +484,6 @@ export default withHistory(
     connect(
       mapStateToProps,
       mapDispatchToProps
-    )(injectIntl(withTheme(withStyles(styles)(FamilyOrInsureePoliciesSummary))))
+    )(injectIntl(FamilyOrInsureePoliciesSummary))
   )
 );

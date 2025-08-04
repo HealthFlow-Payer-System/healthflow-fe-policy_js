@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import _debounce from "lodash/debounce";
-import { withTheme, withStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import { injectIntl } from "react-intl";
 import { Checkbox, FormControlLabel, Grid } from "@mui/material";
 import {
@@ -13,17 +13,25 @@ import {
   AmountInput,
 } from "@openimis/fe-core";
 
-const styles = (theme) => ({
-  dialogTitle: theme.dialog.title,
-  dialogContent: theme.dialog.content,
-  form: {
-    padding: 0,
-  },
-  item: {
-    padding: theme.spacing(1),
-  },
-  paperDivider: theme.paper.divider,
-});
+const StyledDialogTitle = styled('div')(({ theme }) => ({
+  ...theme.dialog.title,
+}));
+
+const StyledDialogContent = styled('div')(({ theme }) => ({
+  ...theme.dialog.content,
+}));
+
+const StyledForm = styled('div')(({ theme }) => ({
+  padding: 0,
+}));
+
+const StyledItem = styled('div')(({ theme }) => ({
+  padding: theme.spacing(1),
+}));
+
+const StyledPaperDivider = styled('div')(({ theme }) => ({
+  ...theme.paper.divider,
+}));
 
 const POLICY_FILTER_CONTRIBUTION_KEY = "policy.Filter";
 
@@ -88,9 +96,9 @@ class PolicyFilter extends Component {
   };
 
   render() {
-    const { intl, classes, filters, onChangeFilters } = this.props;
+    const { intl, filters, onChangeFilters } = this.props;
     return (
-      <Grid container className={classes.form}>
+      <Grid container component={StyledForm}>
         <ControlledField
           module="policy"
           id="PolicyFilter.location"
@@ -110,7 +118,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.product"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid item xs={3} component={StyledItem}>
               <PublishedComponent
                 pubRef="product.ProductPicker"
                 withNull={true}
@@ -136,7 +144,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.ConfirmationType"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid item xs={3} component={StyledItem}>
               <PublishedComponent
                 pubRef="insuree.ConfirmationTypePicker"
                 withNull={true}
@@ -161,7 +169,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.officer"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid item xs={3} component={StyledItem}>
               <PublishedComponent
                 pubRef="policy.PolicyOfficerPicker"
                 withNull={true}
@@ -192,7 +200,7 @@ class PolicyFilter extends Component {
             field={
               <Grid item xs={3}>
                 <Grid container>
-                  <Grid item xs={6} className={classes.item}>
+                  <Grid item xs={6} component={StyledItem}>
                     <PublishedComponent
                       pubRef="core.DatePicker"
                       value={
@@ -213,7 +221,7 @@ class PolicyFilter extends Component {
                       }
                     />
                   </Grid>
-                  <Grid item xs={6} className={classes.item}>
+                  <Grid item xs={6} component={StyledItem}>
                     <PublishedComponent
                       pubRef="core.DatePicker"
                       value={
@@ -243,7 +251,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.type"
           field={
-            <Grid item xs={2} className={classes.item}>
+            <Grid item xs={2} component={StyledItem}>
               <PublishedComponent
                 pubRef="policy.PolicyStagePicker"
                 withNull={true}
@@ -265,7 +273,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.status"
           field={
-            <Grid item xs={2} className={classes.item}>
+            <Grid item xs={2} component={StyledItem}>
               <PublishedComponent
                 pubRef="policy.PolicyStatusPicker"
                 withNull={true}
@@ -289,7 +297,7 @@ class PolicyFilter extends Component {
             id="PolicyFilter.balanceUnder"
             key={b}
             field={
-              <Grid item xs={2} className={classes.item}>
+              <Grid item xs={2} component={StyledItem}>
                 <AmountInput
                   module="policy"
                   label={`PolicyFilter.${b}`}
@@ -312,7 +320,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.showInactive"
           field={
-            <Grid item xs={2} className={classes.item}>
+            <Grid item xs={2} component={StyledItem}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -339,7 +347,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.showHistory"
           field={
-            <Grid item xs={2} className={classes.item}>
+            <Grid item xs={2} component={StyledItem}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -373,5 +381,5 @@ class PolicyFilter extends Component {
 }
 
 export default withModulesManager(
-  injectIntl(withTheme(withStyles(styles)(PolicyFilter)))
+  injectIntl(PolicyFilter)
 );

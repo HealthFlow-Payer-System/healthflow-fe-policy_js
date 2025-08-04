@@ -2,19 +2,16 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { injectIntl } from 'react-intl';
-import { withTheme, withStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import { Grid, Paper } from "@mui/material";
 import { Table, FormattedMessage } from "@openimis/fe-core";
 import { fetchEligibility } from "../actions";
 
-
-const styles = theme => ({
-    paper: {
-        margin: 0,
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(1),
-    }
-});
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  margin: 0,
+  marginTop: theme.spacing(1),
+  marginBottom: theme.spacing(1),
+}));
 
 const counts = insureeEligibility => (
     <Table
@@ -82,21 +79,21 @@ class InsureeEligibilitySummary extends Component {
     }
 
     render() {
-        const { classes, insuree, insureeEnquiry, insureeEligibility } = this.props;
+        const { insuree, insureeEnquiry, insureeEligibility } = this.props;
         const currentInsuree = insureeEnquiry || insuree;
         if (!currentInsuree || !insureeEligibility || !this.isEligiblitySummaryEnabled) return null;
 
         return (
             <Grid container>
                 <Grid item xs={12}>
-                    <Paper className={classes.paper}>
+                    <StyledPaper>
                         {counts(insureeEligibility)}
-                    </Paper>
+                    </StyledPaper>
                 </Grid>
                 <Grid item xs={12}>
-                    <Paper className={classes.paper}>
+                    <StyledPaper>
                         {amounts(insureeEligibility)}
-                    </Paper>
+                    </StyledPaper>
                 </Grid>
             </Grid>
         )
@@ -117,7 +114,5 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-    injectIntl(withTheme(
-        withStyles(styles)(InsureeEligibilitySummary)
-    ))
+    injectIntl(InsureeEligibilitySummary)
 );
