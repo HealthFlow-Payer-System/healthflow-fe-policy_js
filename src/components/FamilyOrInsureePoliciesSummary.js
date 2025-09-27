@@ -5,7 +5,7 @@ import { injectIntl } from "react-intl";
 import clsx from "clsx";
 
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { Divider, Grid, Paper, Typography, FormControlLabel, Checkbox, IconButton } from "@material-ui/core";
+import { Divider, Grid, Paper, Typography, FormControlLabel, Checkbox, IconButton, Button } from "@material-ui/core";
 import { Add as AddIcon, Autorenew as RenewIcon, Delete as DeleteIcon, Pause as SuspendIcon } from "@material-ui/icons";
 
 import {
@@ -304,9 +304,9 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
     f.push((i) =>
       !this.props.readOnly && this.canRenew(i)
         ? withTooltip(
-            <IconButton onClick={(e) => this.renewPolicy(i)}>
-              <RenewIcon />
-            </IconButton>,
+            <Button startIcon={<RenewIcon />} onClick={(e) => this.renewPolicy(i)}>
+              {formatMessage(this.props.intl, "policy", "action.RenewPolicy.buttonText")}
+            </Button>,
             formatMessage(this.props.intl, "policy", "action.RenewPolicy.tooltip")
           )
         : null
@@ -314,9 +314,9 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
     f.push((i) =>
       !this.props.readOnly && this.canSuspend(i)
         ? withTooltip(
-            <IconButton onClick={(e) => this.confirmSuspend(i)}>
-              <SuspendIcon />
-            </IconButton>,
+            <Button startIcon={<SuspendIcon />} onClick={(e) => this.confirmSuspend(i)}>
+              {formatMessage(this.props.intl, "policy", "action.SuspendPolicy.buttonText")}
+            </Button>,
             formatMessage(this.props.intl, "policy", "action.SuspendPolicy.tooltip")
           )
         : null
@@ -324,9 +324,9 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
     f.push((i) =>
       !this.props.readOnly && this.canDelete(i)
         ? withTooltip(
-            <IconButton onClick={(e) => this.confirmDelete(i)}>
-              <DeleteIcon />
-            </IconButton>,
+            <Button startIcon={<DeleteIcon />} onClick={(e) => this.confirmDelete(i)}>
+              {formatMessage(this.props.intl, "policy", "action.DeletePolicy.buttonText")}
+            </Button>,
             formatMessage(this.props.intl, "policy", "action.DeletePolicy.tooltip")
           )
         : null
@@ -379,9 +379,9 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
         : [
             {
               button: (
-                <IconButton onClick={this.addNewPolicy}>
-                  <AddIcon />
-                </IconButton>
+                <Button startIcon={<AddIcon />} onClick={this.addNewPolicy}>
+                  {formatMessage(intl, "policy", "action.AddPolicy.buttonText")}
+                </Button>
               ),
               tooltip: formatMessage(intl, "policy", "action.AddPolicy.tooltip"),
             },
