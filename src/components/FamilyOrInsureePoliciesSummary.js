@@ -237,12 +237,13 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
       "policies.expiryDate",
       "policies.status",
       "policies.policyValue",
-      !this.hideSecondariesColumns && "policies.deduction",
-      !this.hideSecondariesColumns && "policies.hospitalDeduction",
-      !this.hideSecondariesColumns && "policies.nonHospitalDeduction",
-      !this.hideSecondariesColumns && "policies.ceiling",
-      !this.hideSecondariesColumns && "policies.hospitalCeiling",
-      !this.hideSecondariesColumns && "policies.nonHospitalCeiling",
+      !this.hideSecondariesColumns ? (
+        "policies.deduction", 
+        "policies.hospitalDeduction", 
+        "policies.nonHospitalDeduction", 
+        "policies.ceiling", 
+        "policies.hospitalCeiling", 
+        "policies.nonHospitalCeiling") : null,
     ];
     if (this.showBalance) {
       h.push("policies.balance");
