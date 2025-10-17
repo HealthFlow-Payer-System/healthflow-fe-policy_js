@@ -387,15 +387,14 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
       pageInfo, 
       policies = [], 
       fetchingPolicies, 
-      fetchedPolicies, 
       errorPolicies,
+      rights,
       hideAddPolicyButton = false,
       family,
       insuree,
       readOnly,
       insureeEnquiry,
       disableSelection,
-      selectedPolicy,
       className,
     } = this.props;
 
