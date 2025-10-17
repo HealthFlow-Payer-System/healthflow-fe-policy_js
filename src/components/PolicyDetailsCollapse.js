@@ -56,7 +56,7 @@ class PolicyDetailsCollapse extends React.Component {
           <Table
             module="policy"
             headers={this.getHeaders()}
-            items={[policy]}  // Passer la politique comme un tableau d'un élément
+            items={[policy]}
             itemFormatters={this.itemFormatters()}
             withPagination={false}
             withHeader={true}

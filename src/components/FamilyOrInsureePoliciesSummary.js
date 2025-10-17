@@ -216,19 +216,14 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
   }
 
   onChangeSelection = (i) => {
-    console.log("✅ onChangeSelection triggered with:", i);
     const { selectPolicy, disableSelection } = this.props;
   
     if (disableSelection) {
-      console.log("⚠️ disableSelection is true → nothing will happen");
       return;
     }
     if (this.useCollapsibleDetails && i && i[0]) {
-      console.log("📂 Toggling collapse for policy:", i[0].policyUuid);
       this.togglePolicyDetails(i[0].policyUuid);
     } else {
-      // Si aucune policy sélectionnée → fermer collapse
-      console.log("❌ Désélection → fermer details");
       this.setState({ expandedPolicy: null });
     }
   
@@ -309,7 +304,6 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
   togglePolicyDetails = (policyUuid) => {
     this.setState(prevState => {
       const newState = prevState.expandedPolicy === policyUuid ? null : policyUuid;
-      console.log("🔄 togglePolicyDetails → expandedPolicy set to:", newState);
       return { expandedPolicy: newState };
     });
   };  
@@ -396,9 +390,11 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
       fetchingPolicies, 
       fetchedPolicies, 
       errorPolicies,
+      hideAddPolicyButton = false,
       family,
       insuree,
       readOnly,
+      insureeEnquiry,
       disableSelection,
       selectedPolicy,
       className,
@@ -443,6 +439,7 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
           headers={this.headers()}
           headerActions={this.headerActions()}
           items={policies}
+          fetching={fetchingPolicies}
           itemFormatters={this.itemFormatters()}
           error={errorPolicies}
           withSelection={disableSelection ? false : "single"}
@@ -459,7 +456,6 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
         />
         {this.useCollapsibleDetails && Array.isArray(policies) && policies.map(policy => {
           const isOpen = expandedPolicy === policy?.policyUuid;
-          console.log("👀 Rendering collapse for", policy?.policyUuid, "open:", isOpen);
           return (
             <PolicyDetailsCollapse
               key={policy?.policyUuid || Math.random()}
