@@ -397,11 +397,30 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
       disableSelection,
       selectedPolicy,
       className,
-      ...otherProps
     } = this.props;
+
+    if ((!family || !family.uuid) && (!insuree || !insuree.uuid) && (!insureeEnquiry?.uuid))  {
+      console.error(
+        "FamilyOrInsureePoliciesSummary: No valid family, insuree, or insureeEnquiry found. " +
+          "Component will not render."
+      );
+      return null;
+    }
+
+    let actions =
+      hideAddPolicyButton || !!readOnly || !rights.includes(RIGHT_POLICY_ADD) 
+        ? []
+        : [
+            {
+              button: (
+                <IconButton onClick={this.addNewPolicy}>
+                  <AddIcon />
+                </IconButton>
+              ),
+              tooltip: formatMessage(intl, "policy", "action.AddPolicy.tooltip"),
+            },
+          ];
     
-    // Extraire les actions des props
-    const { actions = [] } = otherProps;
     const { expandedPolicy } = this.state;
     
     return (
