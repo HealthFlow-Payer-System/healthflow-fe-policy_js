@@ -3,10 +3,9 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { injectIntl } from "react-intl";
 import clsx from "clsx";
-import { withStyles } from "@material-ui/core/styles";
 import PolicyDetailsCollapse from "./PolicyDetailsCollapse";
 
-import { withTheme } from "@material-ui/core/styles";
+import { withTheme, withStyles } from "@material-ui/core/styles";
 import { Divider, Grid, Paper, Typography, FormControlLabel, Checkbox, IconButton } from "@material-ui/core";
 import { Add as AddIcon, Autorenew as RenewIcon, Delete as DeleteIcon, Pause as SuspendIcon } from "@material-ui/icons";
 
