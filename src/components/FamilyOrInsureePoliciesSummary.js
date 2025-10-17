@@ -3,8 +3,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { injectIntl } from "react-intl";
 import clsx from "clsx";
+import { withStyles } from "@material-ui/core/styles";
+import PolicyDetailsCollapse from "./PolicyDetailsCollapse";
 
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { withTheme } from "@material-ui/core/styles";
 import { Divider, Grid, Paper, Typography, FormControlLabel, Checkbox, IconButton } from "@material-ui/core";
 import { Add as AddIcon, Autorenew as RenewIcon, Delete as DeleteIcon, Pause as SuspendIcon } from "@material-ui/icons";
 
@@ -88,6 +90,15 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
       "familyOrInsureePoliciesSummary.orderByExpiryDate",
       "expiryDate"
     );
+    this.useCollapsibleDetails = props.modulesManager.getConf(
+      "fe-policy",
+      "familyOrInsureePoliciesSummary.useCollapsibleDetails",
+      true
+    );
+    this.state = {
+      ...this.state,
+      expandedPolicy: null
+    };
   }
 
   componentDidMount() {
@@ -205,13 +216,26 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
   }
 
   onChangeSelection = (i) => {
+    console.log("✅ onChangeSelection triggered with:", i);
     const { selectPolicy, disableSelection } = this.props;
-
+  
     if (disableSelection) {
+      console.log("⚠️ disableSelection is true → nothing will happen");
       return;
     }
-
+    if (this.useCollapsibleDetails && i && i[0]) {
+      console.log("📂 Toggling collapse for policy:", i[0].policyUuid);
+      this.togglePolicyDetails(i[0].policyUuid);
+    } else {
+      // Si aucune policy sélectionnée → fermer collapse
+      console.log("❌ Désélection → fermer details");
+      this.setState({ expandedPolicy: null });
+    }
+  
     selectPolicy(i[0] || null);
+    if (this.props.onChangeSelection) {
+      this.props.onChangeSelection(i);
+    }
   };
 
   toggleCheckbox = (key) => {
@@ -231,17 +255,17 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
       "policies.enrolmentDate",
       "policies.expiryDate",
       "policies.status",
-      "policies.policyValue",
-      "policies.deduction",
-      "policies.hospitalDeduction",
-      "policies.nonHospitalDeduction",
-      "policies.ceiling",
-      "policies.hospitalCeiling",
-      "policies.nonHospitalCeiling",
+      ...(this.useCollapsibleDetails ? [] : [
+        "policies.policyValue",
+        "policies.deduction",
+        "policies.hospitalDeduction",
+        "policies.nonHospitalDeduction",
+        "policies.ceiling",
+        "policies.hospitalCeiling",
+        "policies.nonHospitalCeiling",
+        ...(this.showBalance ? ["policies.balance"] : [])
+      ])
     ];
-    if (this.showBalance) {
-      h.push("policies.balance");
-    }
     h.push("", "", "");
     return h;
   };
@@ -282,6 +306,14 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
   canSuspend = (policy) => !this.props.readOnly && canSuspendPolicy(this.props.rights, policy);
   canRenew = (policy) => !this.props.readOnly && canRenewPolicy(this.props.rights, policy);
 
+  togglePolicyDetails = (policyUuid) => {
+    this.setState(prevState => {
+      const newState = prevState.expandedPolicy === policyUuid ? null : policyUuid;
+      console.log("🔄 togglePolicyDetails → expandedPolicy set to:", newState);
+      return { expandedPolicy: newState };
+    });
+  };  
+  
   itemFormatters = () => {
     let f = [
       (i) => i.productCode,
@@ -290,16 +322,23 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
       (i) => formatDateFromISO(this.props.modulesManager, this.props.intl, i.enrollDate),
       (i) => formatDateFromISO(this.props.modulesManager, this.props.intl, i.expiryDate),
       (i) => formatMessage(this.props.intl, "policy", `policies.status.${i.status}`),
-      (i) => <AmountInput value={i.policyValue} readOnly />,
-      (i) => i.ded,
-      (i) => i.dedInPatient,
-      (i) => i.dedOutPatient,
-      (i) => i.ceiling,
-      (i) => i.ceilingInPatient,
-      (i) => i.ceilingOutPatient,
     ];
-    if (this.showBalance) {
-      f.push((i) => i.balance);
+
+    if (!this.useCollapsibleDetails) {
+      f = [
+        ...f,
+        (i) => <AmountInput value={i.policyValue} readOnly />,
+        (i) => i.ded,
+        (i) => i.dedInPatient,
+        (i) => i.dedOutPatient,
+        (i) => i.ceiling,
+        (i) => i.ceilingInPatient,
+        (i) => i.ceilingOutPatient,
+      ];
+      
+      if (this.showBalance) {
+        f.push((i) => i.balance);
+      }
     }
     f.push((i) =>
       !this.props.readOnly && this.canRenew(i)
@@ -349,52 +388,30 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
   itemIdentifier = (i) => i.policyUuid;
 
   render() {
-    const {
-      intl,
-      classes,
-      rights,
-      fetchingPolicies,
-      policies,
-      pageInfo,
+    const { 
+      classes, 
+      intl, 
+      pageInfo, 
+      policies = [], 
+      fetchingPolicies, 
+      fetchedPolicies, 
       errorPolicies,
       family,
       insuree,
-      insureeEnquiry,
       readOnly,
-      className,
-      hideAddPolicyButton = false,
       disableSelection,
+      selectedPolicy,
+      className,
+      ...otherProps
     } = this.props;
-    if ((!family || !family.uuid) && (!insuree || !insuree.uuid) && (!insureeEnquiry?.uuid))  {
-      console.error(
-        "FamilyOrInsureePoliciesSummary: No valid family, insuree, or insureeEnquiry found. " +
-          "Component will not render."
-      );
-      return null;
-    }
-
-    let actions =
-      hideAddPolicyButton || !!readOnly || !rights.includes(RIGHT_POLICY_ADD) 
-        ? []
-        : [
-            {
-              button: (
-                <IconButton onClick={this.addNewPolicy}>
-                  <AddIcon />
-                </IconButton>
-              ),
-              tooltip: formatMessage(intl, "policy", "action.AddPolicy.tooltip"),
-            },
-          ];
-
+    
+    // Extraire les actions des props
+    const { actions = [] } = otherProps;
+    const { expandedPolicy } = this.state;
+    
     return (
       <Paper className={clsx(classes.paper, className)}>
-        <Grid
-          container
-          justifyContent="space-between"
-          alignItems="center"
-          className={clsx(classes.paperHeader, classes.tableTitle)}
-        >
+        <Grid container justifyContent="space-between" className={clsx(classes.paperHeader, classes.tableTitle)}>
           <Grid item>
             <Typography className={classes.title}>{this.header()}</Typography>
           </Grid>
@@ -412,13 +429,11 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
                   label={formatMessage(intl, "policy", "policies.onlyActiveOrLastExpired")}
                 />
               </Grid>
-              {actions.map((a, idx) => {
-                return (
-                  <Grid item key={`form-action-${idx}`}>
-                    {withTooltip(a.button, a.tooltip)}
-                  </Grid>
-                );
-              })}
+              {Array.isArray(actions) && actions.map((a, idx) => (
+                <Grid item key={`form-action-${idx}`}>
+                  {withTooltip(a.button, a.tooltip)}
+                </Grid>
+              ))}
             </Grid>
           </Grid>
         </Grid>
@@ -427,24 +442,35 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
           module="policy"
           headers={this.headers()}
           headerActions={this.headerActions()}
-          itemFormatters={this.itemFormatters()}
-          itemIdentifier={this.itemIdentifier}
           items={policies}
-          fetching={fetchingPolicies}
+          itemFormatters={this.itemFormatters()}
           error={errorPolicies}
           withSelection={disableSelection ? false : "single"}
-          onChangeSelection={this.onChangeSelection}
-          onDoubleClick={this.onDoubleClick}
           withPagination={true}
           rowsPerPageOptions={this.rowsPerPageOptions}
-          defaultPageSize={this.defaultPageSize}
           page={this.state.page}
           pageSize={this.state.pageSize}
-          count={pageInfo.totalCount}
+          count={pageInfo?.totalCount || 0}
           onChangePage={this.onChangePage}
           onChangeRowsPerPage={this.onChangeRowsPerPage}
           rowLocked={this.rowLocked}
+          onDoubleClick={this.onDoubleClick}
+          onChangeSelection={this.onChangeSelection}
         />
+        {this.useCollapsibleDetails && Array.isArray(policies) && policies.map(policy => {
+          const isOpen = expandedPolicy === policy?.policyUuid;
+          console.log("👀 Rendering collapse for", policy?.policyUuid, "open:", isOpen);
+          return (
+            <PolicyDetailsCollapse
+              key={policy?.policyUuid || Math.random()}
+              open={isOpen}
+              policy={policy}
+              modulesManager={this.props.modulesManager}
+              intl={intl}
+            />
+          );
+        })}
+
       </Paper>
     );
   }
