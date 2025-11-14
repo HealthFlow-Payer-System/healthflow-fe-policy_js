@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { injectIntl } from 'react-intl';
-import { IconButton, Tooltip } from "@material-ui/core";
+import { Button, Tooltip } from "@material-ui/core";
 import {
     People as PeopleIcon, Tab as TabIcon,
     Autorenew as RenewIcon,
@@ -233,28 +233,38 @@ class PolicySearcher extends Component {
                 if (!policy.family) return null
                 return (
                     <Tooltip title={formatMessage(this.props.intl, "policy", "policySummaries.openFamilyButton.tooltip")}>
-                        <IconButton onClick={e => !policy.clientMutationId && historyPush(this.props.modulesManager, this.props.history, "insuree.route.familyOverview", [policy.family.uuid])}><PeopleIcon /></IconButton >
+                        <Button startIcon={<PeopleIcon />} onClick={e => !policy.clientMutationId && historyPush(this.props.modulesManager, this.props.history, "insuree.route.familyOverview", [policy.family.uuid])}>
+                            {formatMessage(this.props.intl, "policy", "policySummaries.openFamilyButton.buttonText")}
+                        </Button>
                     </Tooltip>
                 )
             },
             policy => (
                 <Tooltip title={formatMessage(this.props.intl, "policy", "policySummaries.openNewTabButton.tooltip")}>
-                    <IconButton onClick={e => !policy.clientMutationId && this.props.onDoubleClick(policy, true)}><TabIcon /></IconButton >
+                    <Button startIcon={<TabIcon />} onClick={e => !policy.clientMutationId && this.props.onDoubleClick(policy, true)}>
+                        {formatMessage(this.props.intl, "policy", "policySummaries.openNewTabButton.buttonText")}
+                    </Button>
                 </Tooltip>
             ),
             policy => this.canRenew(policy) && (
                 <Tooltip title={formatMessage(this.props.intl, "policy", "action.RenewPolicy.tooltip")}>
-                    <IconButton onClick={e => !policy.clientMutationId && this.renewPolicy(policy)}><RenewIcon /></IconButton >
+                    <Button startIcon={<RenewIcon />} onClick={e => !policy.clientMutationId && this.renewPolicy(policy)}>
+                        {formatMessage(this.props.intl, "policy", "action.RenewPolicy.buttonText")}
+                    </Button>
                 </Tooltip>
             ),
             policy => this.canSuspend(policy) && (
                 <Tooltip title={formatMessage(this.props.intl, "policy", "action.SuspendPolicy.tooltip")}>
-                    <IconButton onClick={e => !policy.clientMutationId && this.confirmSuspend(policy)}><SuspendIcon /></IconButton >
+                    <Button startIcon={<SuspendIcon />} onClick={e => !policy.clientMutationId && this.confirmSuspend(policy)}>
+                        {formatMessage(this.props.intl, "policy", "action.SuspendPolicy.buttonText")}
+                    </Button>
                 </Tooltip>
             ),
             policy => this.canDelete(policy) && (
                 <Tooltip title={formatMessage(this.props.intl, "policy", "action.DeletePolicy.tooltip")}>
-                    <IconButton onClick={e => !policy.clientMutationId && this.confirmDelete(policy)}><DeleteIcon /></IconButton >
+                    <Button startIcon={<DeleteIcon />} onClick={e => !policy.clientMutationId && this.confirmDelete(policy)}>
+                        {formatMessage(this.props.intl, "policy", "action.DeletePolicy.buttonText")}
+                    </Button>
                 </Tooltip>
             )
         ];
