@@ -151,7 +151,7 @@ class PolicySearcher extends Component {
 
     canDelete = (policy) => canDeletePolicy(this.props.rights, policy)
     canSuspend = (policy) => canSuspendPolicy(this.props.rights, policy)
-    canRenew = (policy) => !this.props.renew && canRenewPolicy(this.props.rights, policy)
+    canRenew = (policy) => !this.props.renew && canRenewPolicy(this.props.rights, policy) && policy.value != null
 
     headers = (filters) => {
         const h = [
