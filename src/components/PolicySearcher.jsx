@@ -331,4 +331,5 @@ const mapDispatchToProps = dispatch => {
         dispatch);
 };
 
+export { POLICY_SEARCHER_CONTRIBUTION_KEY };
 export default withModulesManager(withHistory(connect(mapStateToProps, mapDispatchToProps)(injectIntl(PolicySearcher))));

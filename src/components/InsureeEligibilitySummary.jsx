@@ -85,12 +85,12 @@ class InsureeEligibilitySummary extends Component {
 
         return (
             <Grid container>
-                <Grid item xs={12}>
+                <Grid size={12}>
                     <StyledPaper>
                         {counts(insureeEligibility)}
                     </StyledPaper>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={12}>
                     <StyledPaper>
                         {amounts(insureeEligibility)}
                     </StyledPaper>
@@ -113,6 +113,8 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetchEligibility }, dispatch);
 };
 
+export { StyledPaper };
+export { InsureeEligibilitySummary };
 export default connect(mapStateToProps, mapDispatchToProps)(
     injectIntl(InsureeEligibilitySummary)
 );

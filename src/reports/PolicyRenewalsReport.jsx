@@ -10,7 +10,7 @@ const PolicyRenewalsReport = (props) => {
 
   return (
     <Grid container direction="column" spacing={1}>
-      <Grid item>
+      <Grid>
         <PublishedComponent
           pubRef="core.DatePicker"
           value={values.dateStart}
@@ -20,7 +20,7 @@ const PolicyRenewalsReport = (props) => {
           onChange={(dateStart) => setValues({ ...values, dateStart })}
         />
       </Grid>
-      <Grid item>
+      <Grid>
         <PublishedComponent
           pubRef="core.DatePicker"
           value={values.dateEnd}
@@ -30,7 +30,7 @@ const PolicyRenewalsReport = (props) => {
           onChange={(dateEnd) => setValues({ ...values, dateEnd })}
         />
       </Grid>
-      <Grid item>
+      <Grid>
         <PublishedComponent
           pubRef="location.LocationPicker"
           onChange={(region) =>
@@ -44,7 +44,7 @@ const PolicyRenewalsReport = (props) => {
           label={formatMessage("PolicyRenewalsReport.region")}
         />
       </Grid>
-      <Grid item>
+      <Grid>
         <PublishedComponent
           pubRef="location.LocationPicker"
           onChange={(district) =>
@@ -58,7 +58,7 @@ const PolicyRenewalsReport = (props) => {
           label={formatMessage("PolicyRenewalsReport.district")}
         />
       </Grid>
-      <Grid item>
+      <Grid>
         <PublishedComponent
           pubRef="product.ProductPicker"
           onChange={(product) => setValues({ ...values, product })}
@@ -67,7 +67,7 @@ const PolicyRenewalsReport = (props) => {
           label={formatMessage("PolicyRenewalsReport.product")}
         />
       </Grid>
-      <Grid item>
+      <Grid>
         <PublishedComponent
           pubRef="admin.EnrolmentOfficerPicker"
           onChange={(officer) => setValues({ ...values, officer })}
@@ -76,7 +76,7 @@ const PolicyRenewalsReport = (props) => {
           label={formatMessage("PolicyRenewalsReport.officer")}
         />
       </Grid>
-      <Grid item>
+      <Grid>
         <ConstantBasedPicker
           module="policy"
           value={values.sorting}

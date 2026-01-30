@@ -103,7 +103,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.location"
           field={
-            <Grid item xs={6}>
+            <Grid size={6}>
               <PublishedComponent
                 pubRef="location.CoarseLocationFilter"
                 withNull={true}
@@ -118,7 +118,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.product"
           field={
-            <Grid item xs={3} component={StyledItem}>
+            <Grid size={3} component={StyledItem}>
               <PublishedComponent
                 pubRef="product.ProductPicker"
                 withNull={true}
@@ -144,7 +144,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.ConfirmationType"
           field={
-            <Grid item xs={3} component={StyledItem}>
+            <Grid size={3} component={StyledItem}>
               <PublishedComponent
                 pubRef="insuree.ConfirmationTypePicker"
                 withNull={true}
@@ -169,7 +169,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.officer"
           field={
-            <Grid item xs={3} component={StyledItem}>
+            <Grid size={3} component={StyledItem}>
               <PublishedComponent
                 pubRef="policy.PolicyOfficerPicker"
                 withNull={true}
@@ -198,9 +198,9 @@ class PolicyFilter extends Component {
             id={`PolicyFilter.${date}Date`}
             key={`PolicyFilter.${date}Date`}
             field={
-              <Grid item xs={3}>
+              <Grid size={3}>
                 <Grid container>
-                  <Grid item xs={6} component={StyledItem}>
+                  <Grid size={6} component={StyledItem}>
                     <PublishedComponent
                       pubRef="core.DatePicker"
                       value={
@@ -221,7 +221,7 @@ class PolicyFilter extends Component {
                       }
                     />
                   </Grid>
-                  <Grid item xs={6} component={StyledItem}>
+                  <Grid size={6} component={StyledItem}>
                     <PublishedComponent
                       pubRef="core.DatePicker"
                       value={
@@ -251,7 +251,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.type"
           field={
-            <Grid item xs={2} component={StyledItem}>
+            <Grid size={2} component={StyledItem}>
               <PublishedComponent
                 pubRef="policy.PolicyStagePicker"
                 withNull={true}
@@ -273,7 +273,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.status"
           field={
-            <Grid item xs={2} component={StyledItem}>
+            <Grid size={2} component={StyledItem}>
               <PublishedComponent
                 pubRef="policy.PolicyStatusPicker"
                 withNull={true}
@@ -297,7 +297,7 @@ class PolicyFilter extends Component {
             id="PolicyFilter.balanceUnder"
             key={b}
             field={
-              <Grid item xs={2} component={StyledItem}>
+              <Grid size={2} component={StyledItem}>
                 <AmountInput
                   module="policy"
                   label={`PolicyFilter.${b}`}
@@ -320,7 +320,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.showInactive"
           field={
-            <Grid item xs={2} component={StyledItem}>
+            <Grid size={2} component={StyledItem}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -347,7 +347,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.showHistory"
           field={
-            <Grid item xs={2} component={StyledItem}>
+            <Grid size={2} component={StyledItem}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -380,6 +380,8 @@ class PolicyFilter extends Component {
   }
 }
 
+export { StyledDialogTitle };
+export { PolicyFilter };
 export default withModulesManager(
   injectIntl(PolicyFilter)
 );

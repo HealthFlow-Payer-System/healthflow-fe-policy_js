@@ -402,12 +402,12 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
           alignItems="center"
           className={clsx("paperHeader", "tableTitle")}
         >
-          <Grid item>
+          <Grid>
             <StyledTitle>{this.header()}</StyledTitle>
           </Grid>
-          <Grid item>
+          <Grid>
             <Grid container alignItems="center" spacing={3}>
-              <Grid item>
+              <Grid>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -421,7 +421,7 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
               </Grid>
               {actions.map((a, idx) => {
                 return (
-                  <Grid item key={`form-action-${idx}`}>
+                  <Grid key={`form-action-${idx}`}>
                     {withTooltip(a.button, a.tooltip)}
                   </Grid>
                 );
@@ -479,6 +479,8 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
+export { StyledPaper };
+export { FamilyOrInsureePoliciesSummary };
 export default withHistory(
   withModulesManager(
     connect(

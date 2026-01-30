@@ -92,6 +92,8 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
+export { StyledPage };
+export { PolicyPage };
 export default injectIntl(
   withModulesManager(
     withHistory(

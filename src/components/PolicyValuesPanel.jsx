@@ -42,10 +42,10 @@ class PolicyValuesPanel extends Component {
 
     let readOnly = contributionPanelReadOnly;
     return (
-      <Grid item xs={12}>
+      <Grid size={12}>
         <StyledPaper>
           <Grid container component={StyledTableTitle}>
-            <Grid item component={StyledTableTitle}>
+            <Grid component={StyledTableTitle}>
               <Typography>
                 <FormattedMessage module="policy" id={title} />
               </Typography>
@@ -54,7 +54,7 @@ class PolicyValuesPanel extends Component {
           <Divider />
           <Grid container component={StyledItem}>
             <Grid container alignItems="center" justify="start">
-              <Grid item xs={3} component={StyledItem}>
+              <Grid size={3} component={StyledItem}>
                 <ProgressOrError
                   progress={fetchingPolicyValues}
                   error={errorPolicyValues}
@@ -68,7 +68,7 @@ class PolicyValuesPanel extends Component {
                   />
                 )}
               </Grid>
-              <Grid item xs={3} component={StyledItem}>
+              <Grid size={3} component={StyledItem}>
                 <AmountInput
                   module="policy"
                   label="Policy.sumPremiums"
@@ -77,7 +77,7 @@ class PolicyValuesPanel extends Component {
                   readOnly={readOnly}
                 />
               </Grid>
-              <Grid item xs={3} component={StyledItem}>
+              <Grid size={3} component={StyledItem}>
                 <AmountInput
                   module="policy"
                   label="Policy.balance"
@@ -88,44 +88,44 @@ class PolicyValuesPanel extends Component {
               </Grid>
             </Grid>
             <Grid container alignItems="center">
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Divider style={{ margin: "10px 0" }} />
               </Grid>
-              <Grid item xs={3} />
-              <Grid item xs={3} component={StyledItemCenter}>
+              <Grid size={3} />
+              <Grid size={3} component={StyledItemCenter}>
                 <Typography variant="body1">General</Typography>
               </Grid>
-              <Grid item xs={3} component={StyledItemCenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <Typography variant="body1">In-Patient</Typography>
               </Grid>
-              <Grid item xs={3} component={StyledItemCenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <Typography variant="body1">Out-Patient</Typography>
               </Grid>
-              <Grid item xs={3} component={StyledItemCenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <Typography variant="body1">Deductible</Typography>
               </Grid>
-              <Grid item xs={3} component={StyledItemCenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimDedG} readOnly={readOnly} />
               </Grid>
-              <Grid item xs={3} component={StyledItemCenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimDedIp} readOnly={readOnly} />
               </Grid>
-              <Grid item xs={3} component={StyledItemCenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimDedOp} readOnly={readOnly} />
               </Grid>
-              <Grid item xs={3} component={StyledItemCenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <Typography variant="body1">Remunerated Health Care</Typography>
               </Grid>
-              <Grid item xs={3} component={StyledItemCenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimRemG} readOnly={readOnly} />
               </Grid>
-              <Grid item xs={3} component={StyledItemCenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <AmountInput
                   value={edited.sunmClaimRemIp}
                   readOnly={readOnly}
                 />
               </Grid>
-              <Grid item xs={3} component={StyledItemCenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimRemOp} readOnly={readOnly} />
               </Grid>
             </Grid>
@@ -152,4 +152,5 @@ const mapStateToProps = (state) => ({
   policyValues: state.policy.policyValues,
 });
 
+export { StyledPaper };
 export default connect(mapStateToProps)(PolicyValuesPanel);

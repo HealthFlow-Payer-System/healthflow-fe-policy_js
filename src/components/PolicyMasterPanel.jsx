@@ -229,15 +229,15 @@ class PolicyMasterPanel extends FormPanel {
 
     return (
       <Grid container>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <StyledPaper>
             <Grid container component={StyledTableTitle}>
-              <Grid item xs={3} component={StyledTableTitle}>
+              <Grid size={3} component={StyledTableTitle}>
                 <Typography>
                   <FormattedMessage module="policy" id={title} />
                 </Typography>
               </Grid>
-              <Grid item xs={9}>
+              <Grid size={9}>
                 <Grid container justify="flex-end">
                   {!!actions &&
                     actions.map((a, idx) => {
@@ -256,7 +256,7 @@ class PolicyMasterPanel extends FormPanel {
             </Grid>
             <Divider />
             <Grid container component={StyledItem}>
-              <Grid item xs={3} component={StyledItem}>
+              <Grid size={3} component={StyledItem}>
                 <PublishedComponent
                   pubRef="core.DatePicker"
                   value={!!edited ? edited.enrollDate : null}
@@ -275,7 +275,7 @@ class PolicyMasterPanel extends FormPanel {
                   onChange={(v) => this.updateAttribute("enrollDate", v)}
                 />
               </Grid>
-              <Grid item xs={3} component={StyledItem}>
+              <Grid size={3} component={StyledItem}>
                 <PublishedComponent
                   pubRef="core.DatePicker"
                   value={!!edited ? edited.effectiveDate : null}
@@ -286,7 +286,7 @@ class PolicyMasterPanel extends FormPanel {
                 />
               </Grid>
               {!!fetchingPolicyValues && (
-                <Grid item xs={6} component={StyledItem}>
+                <Grid size={6} component={StyledItem}>
                   <ProgressOrError
                     progress={fetchingPolicyValues}
                     error={errorPolicyValues}
@@ -298,7 +298,7 @@ class PolicyMasterPanel extends FormPanel {
                   <Grid
                     key={`policy-${date}`}
                     item
-                    xs={3}
+                    size={3}
                     component={StyledItem}
                   >
                     <PublishedComponent
@@ -310,7 +310,7 @@ class PolicyMasterPanel extends FormPanel {
                     />
                   </Grid>
                 ))}
-              <Grid item xs={3} component={StyledItem}>
+              <Grid size={3} component={StyledItem}>
                 <PublishedComponent
                   pubRef="product.ProductPicker"
                   value={!!edited && edited.product}
@@ -336,7 +336,7 @@ class PolicyMasterPanel extends FormPanel {
                   enrollmentDate={edited?.enrollDate ?? null}
                 />
               </Grid>
-              <Grid item xs={3} component={StyledItem}>
+              <Grid size={3} component={StyledItem}>
                 <PublishedComponent
                   pubRef="policy.PolicyOfficerPicker"
                   value={!!edited && edited.officer}
@@ -367,7 +367,7 @@ class PolicyMasterPanel extends FormPanel {
                   }
                 />
               </Grid>
-              <Grid item xs={3} component={StyledItem}>
+              <Grid size={3} component={StyledItem}>
                 <PublishedComponent
                   pubRef="policy.PolicyStatusPicker"
                   value={!!edited && edited.status}
@@ -378,8 +378,8 @@ class PolicyMasterPanel extends FormPanel {
                 />
               </Grid>
               {!edited_id && (
-                <Grid xs={12}>
-                  <Grid item xs={3} component={StyledItem}>
+                <Grid size={12}>
+                  <Grid size={3} component={StyledItem}>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -402,7 +402,7 @@ class PolicyMasterPanel extends FormPanel {
               )}
               {edited?.isPaid && (
                 <>
-                  <Grid item xs={12} component={StyledItem}>
+                  <Grid size={12} component={StyledItem}>
                     <Typography variant="subtitle1">
                       <FormattedMessage
                         module="policy"
@@ -418,7 +418,7 @@ class PolicyMasterPanel extends FormPanel {
                       </Typography>
                     </i>
                   </Grid>
-                  <Grid item xs={3} component={StyledItem}>
+                  <Grid size={3} component={StyledItem}>
                     <TextInput
                       module="contribution"
                       label="contribution.receipt"
@@ -429,7 +429,7 @@ class PolicyMasterPanel extends FormPanel {
                       }
                     />
                   </Grid>
-                  <Grid item xs={3} component={StyledItem}>
+                  <Grid size={3} component={StyledItem}>
                     <PublishedComponent
                       pubRef="payer.PayerPicker"
                       withNull={true}
@@ -438,7 +438,7 @@ class PolicyMasterPanel extends FormPanel {
                       onChange={(p) => this.updateAttribute("payer", p)}
                     />
                   </Grid>
-                  <Grid item xs={3} component={StyledItem}>
+                  <Grid size={3} component={StyledItem}>
                     <PublishedComponent
                       pubRef="core.DatePicker"
                       module="contribution"
@@ -447,7 +447,7 @@ class PolicyMasterPanel extends FormPanel {
                       label="contribution.payDate"
                     />
                   </Grid>
-                  <Grid item xs={3} component={StyledItem}>
+                  <Grid size={3} component={StyledItem}>
                     <AmountInput
                       module="contribution"
                       label="contribution.amount"
@@ -456,7 +456,7 @@ class PolicyMasterPanel extends FormPanel {
                       displayZero={true}
                     />
                   </Grid>
-                  <Grid item xs={3} component={StyledItem}>
+                  <Grid size={3} component={StyledItem}>
                     <PublishedComponent
                       pubRef="contribution.PremiumPaymentTypePicker"
                       withNull={false}
@@ -503,6 +503,8 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
+export { StyledPaper };
+export { PolicyMasterPanel };
 export default withModulesManager(
   injectIntl(
     connect(mapStateToProps, mapDispatchToProps)(PolicyMasterPanel)

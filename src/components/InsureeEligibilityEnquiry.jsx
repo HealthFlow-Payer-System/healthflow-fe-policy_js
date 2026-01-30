@@ -22,4 +22,5 @@ class InsureeEligibilityEnquiry extends Component {
   }
 }
 
+export { StyledPaper };
 export default injectIntl(InsureeEligibilityEnquiry);

@@ -93,16 +93,16 @@ class InsureePolicyEligibilitySummary extends Component {
             <Fragment>
                 <ProgressOrError progress={fetchingPolicies} error={errorPolicies} />
                 {!!fetchedPolicies && !activePolicies.length &&
-                    <Grid item component={StyledItem}>
+                    <Grid component={StyledItem}>
                         <FormattedMessage module="policy" id="policies.noActivePolicy" />
                     </Grid>
                 }
                 {!!fetchedPolicies && !!activePolicies.length && (
-                    <Grid item>
+                    <Grid>
                         <Grid container>
                             {activePolicies.map((activePolicy, i) => (
                                 <Fragment key={`activePolicy-${i}`}>
-                                    <Grid item xs={2} component={StyledItem}>
+                                    <Grid size={2} component={StyledItem}>
                                         <TextInput
                                             value={activePolicy.productCode}
                                             module="policy"
@@ -110,7 +110,7 @@ class InsureePolicyEligibilitySummary extends Component {
                                             readOnly={true}
                                         />
                                     </Grid>
-                                    <Grid item xs={4} component={StyledItem}>
+                                    <Grid size={4} component={StyledItem}>
                                         <TextInput
                                             value={activePolicy.productName}
                                             module="policy"
@@ -118,7 +118,7 @@ class InsureePolicyEligibilitySummary extends Component {
                                             readOnly={true}
                                         />
                                     </Grid>
-                                    <Grid item xs={3} component={StyledItem}>
+                                    <Grid size={3} component={StyledItem}>
                                         <PublishedComponent pubRef="core.DatePicker"
                                             value={activePolicy.expiryDate}
                                             module="policy"
@@ -126,7 +126,7 @@ class InsureePolicyEligibilitySummary extends Component {
                                             readOnly={true}
                                         />
                                     </Grid>
-                                    <Grid item xs={3} component={StyledItem}>
+                                    <Grid size={3} component={StyledItem}>
                                         <AmountInput
                                             value={(activePolicy.ceiling || 0)}
                                             module="policy"
@@ -156,6 +156,8 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetchFamilyOrInsureePolicies }, dispatch);
 };
 
+export { StyledItem };
+export { InsureePolicyEligibilitySummary };
 export default withModulesManager(connect(mapStateToProps, mapDispatchToProps)(
     injectIntl(InsureePolicyEligibilitySummary)
 ));

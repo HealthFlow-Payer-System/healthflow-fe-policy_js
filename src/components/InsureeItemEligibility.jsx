@@ -45,7 +45,7 @@ class InsureeItemEligibility extends Component {
           </StyledHeader>
         </Box>
         <Grid container component={StyledSection} alignItems="center">
-          <Grid item xs={6}>
+          <Grid size={6}>
             <Box mr={3}>
               <PublishedComponent
                 pubRef="medical.ItemPicker"
@@ -82,6 +82,8 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ fetchItemEligibility, itemEligibilityClear }, dispatch);
 };
 
+export { StyledItem };
+export { InsureeItemEligibility };
 export default withModulesManager(
   connect(mapStateToProps, mapDispatchToProps)(InsureeItemEligibility)
 );

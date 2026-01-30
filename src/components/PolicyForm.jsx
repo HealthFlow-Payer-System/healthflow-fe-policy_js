@@ -372,6 +372,8 @@ const mapStateToProps = (state) => ({
   mutation: state.policy.mutation,
 });
 
+export { StyledPage };
+export { PolicyForm };
 export default injectIntl(
   withModulesManager(
     withHistory(
