@@ -6,7 +6,7 @@ import InsureeServiceEligibility from "./InsureeServiceEligibility";
 import InsureeItemEligibility from "./InsureeItemEligibility";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  ...theme.paper.paper,
+  ...theme?.paper?.paper ?? {},
 }));
 
 class InsureeEligibilityEnquiry extends Component {

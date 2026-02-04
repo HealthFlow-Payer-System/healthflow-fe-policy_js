@@ -15,7 +15,7 @@ import { createPolicy, renewPolicy, updatePolicy } from "../actions";
 import { POLICY_STAGE_NEW, POLICY_STAGE_RENEW } from "../constants";
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page,
+  ...theme?.page ?? {},
 }));
 
 class PolicyPage extends Component {

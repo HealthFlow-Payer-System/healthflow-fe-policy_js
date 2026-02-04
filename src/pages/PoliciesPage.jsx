@@ -12,7 +12,7 @@ import {
 import PolicySearcher from "../components/PolicySearcher";
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page,
+  ...theme?.page ?? {},
 }));
 
 class PoliciesPage extends Component {

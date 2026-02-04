@@ -29,32 +29,32 @@ import { RIGHT_POLICY_ADD } from "../constants";
 import { policyLabel, canDeletePolicy, canSuspendPolicy, canRenewPolicy } from "../utils/utils";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  ...theme.paper.paper,
+  ...theme?.paper?.paper ?? {},
 }));
 
 const StyledPaperHeader = styled('div')(({ theme }) => ({
-  ...theme.paper.header,
+  ...theme?.paper?.header ?? {},
 }));
 
 const StyledTableTitle = styled('div')(({ theme }) => ({
-  ...theme.table.title,
+  ...theme?.table?.title ?? {},
 }));
 
 const StyledTitle = styled('div')(({ theme }) => ({
-  ...theme.table.title,
+  ...theme?.table?.title ?? {},
   padding: 0,
 }));
 
 const StyledFab = styled('div')(({ theme }) => ({
-  ...theme.fab,
+  ...theme?.fab ?? {},
 }));
 
 const StyledButton = styled('div')(({ theme }) => ({
-  margin: theme.spacing(1),
+  margin: theme?.spacing?.(1),
 }));
 
 const StyledItem = styled('div')(({ theme }) => ({
-  padding: theme.spacing(1),
+  padding: theme?.spacing?.(1),
 }));
 
 class FamilyOrInsureePoliciesSummary extends PagedDataHandler {

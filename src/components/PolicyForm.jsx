@@ -31,7 +31,7 @@ import {
 import { policyLabel } from "../utils/utils";
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page,
+  ...theme?.page ?? {},
 }));
 
 const POLICY_HEAD_PANEL_CONTRIBUTION_KEY = "policy.Policy.headPanel";

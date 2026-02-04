@@ -14,11 +14,11 @@ import {
 } from "@openimis/fe-core";
 
 const StyledDialogTitle = styled('div')(({ theme }) => ({
-  ...theme.dialog.title,
+  ...theme?.dialog?.title ?? {},
 }));
 
 const StyledDialogContent = styled('div')(({ theme }) => ({
-  ...theme.dialog.content,
+  ...theme?.dialog?.content ?? {},
 }));
 
 const StyledForm = styled('div')(({ theme }) => ({
@@ -26,11 +26,11 @@ const StyledForm = styled('div')(({ theme }) => ({
 }));
 
 const StyledItem = styled('div')(({ theme }) => ({
-  padding: theme.spacing(1),
+  padding: theme?.spacing?.(1),
 }));
 
 const StyledPaperDivider = styled('div')(({ theme }) => ({
-  ...theme.paper.divider,
+  ...theme?.paper?.divider ?? {},
 }));
 
 const POLICY_FILTER_CONTRIBUTION_KEY = "policy.Filter";
