@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import _ from "lodash";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import moment from "moment";

@@ -11,26 +11,33 @@ import {
   PublishedComponent,
   ControlledField,
   AmountInput,
+  GRID_RESPONSIVE_STANDARD,
+  GRID_RESPONSIVE_FULL,
 } from "@openimis/fe-core";
 
-const StyledDialogTitle = styled('div')(({ theme }) => ({
-  ...theme?.dialog?.title ?? {},
+const StyledDialogTitle = styled("div")(({ theme }) => ({
+  ...(theme?.dialog?.title ?? {}),
 }));
 
-const StyledDialogContent = styled('div')(({ theme }) => ({
-  ...theme?.dialog?.content ?? {},
+const StyledDialogContent = styled("div")(({ theme }) => ({
+  ...(theme?.dialog?.content ?? {}),
 }));
 
-const StyledForm = styled('div')(({ theme }) => ({
+const StyledForm = styled("div")(({ theme }) => ({
   padding: 0,
+  "& .locationWrapper": {
+    paddingLeft: theme?.spacing ? theme.spacing(1) : 8,
+    paddingRight: theme?.spacing ? theme.spacing(1) : 8,
+    paddingTop: theme?.spacing ? theme.spacing(1) : 8,
+  },
 }));
 
-const StyledItem = styled('div')(({ theme }) => ({
+const StyledItem = styled("div")(({ theme }) => ({
   padding: theme?.spacing?.(1),
 }));
 
-const StyledPaperDivider = styled('div')(({ theme }) => ({
-  ...theme?.paper?.divider ?? {},
+const StyledPaperDivider = styled("div")(({ theme }) => ({
+  ...(theme?.paper?.divider ?? {}),
 }));
 
 const POLICY_FILTER_CONTRIBUTION_KEY = "policy.Filter";
@@ -57,33 +64,6 @@ class PolicyFilter extends Component {
     this.props.onChangeFilters(filters);
   };
 
-  _onChangeCoarseLocation = (i, v, s) => {
-    let filters = [
-      {
-        id: `location_${i}`,
-        value: v,
-        filter: !v
-          ? null
-          : `${i === 0 ? "regionId" : "districtId"}: ${decodeId(v.id)}`,
-      },
-    ];
-    if (!v && i === 0) {
-      filters.push({
-        id: `location_1`,
-        value: null,
-        filter: null,
-      });
-    }
-    if (!!v && i === 1) {
-      filters.push({
-        id: `location_0`,
-        value: v.parent,
-        filter: `regionId : ${decodeId(v.parent.id)}`,
-      });
-    }
-    this.props.onChangeFilters(filters);
-  };
-
   _onChangeRef = (k, v, s) => {
     let filters = [
       {
@@ -98,19 +78,22 @@ class PolicyFilter extends Component {
   render() {
     const { intl, filters, onChangeFilters } = this.props;
     return (
-      <Grid container component={StyledForm}>
+      <Grid container component={StyledForm} spacing={2}>
         <ControlledField
           module="policy"
           id="PolicyFilter.location"
           field={
-            <Grid size={6}>
-              <PublishedComponent
-                pubRef="location.CoarseLocationFilter"
-                withNull={true}
-                filters={filters}
-                onChange={this._onChangeCoarseLocation}
-                anchor="location"
-              />
+            <Grid size={GRID_RESPONSIVE_FULL}>
+              <div className="locationWrapper">
+                <PublishedComponent
+                  pubRef="location.DetailedLocationFilter"
+                  withNull={true}
+                  filters={filters}
+                  onChangeFilters={onChangeFilters}
+                  anchor="location"
+                  split
+                />
+              </div>
             </Grid>
           }
         />
@@ -118,7 +101,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.product"
           field={
-            <Grid size={3} component={StyledItem}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <PublishedComponent
                 pubRef="product.ProductPicker"
                 withNull={true}
@@ -144,11 +127,15 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.ConfirmationType"
           field={
-            <Grid size={3} component={StyledItem}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <PublishedComponent
                 pubRef="insuree.ConfirmationTypePicker"
                 withNull={true}
-                nullLabel={formatMessage(intl, "insuree", "Family.ConfirmationType.null")}
+                nullLabel={formatMessage(
+                  intl,
+                  "insuree",
+                  "Family.ConfirmationType.null"
+                )}
                 value={this._filterValue("confirmationType")}
                 onChange={(k) => {
                   let filters = [
@@ -159,8 +146,7 @@ class PolicyFilter extends Component {
                     },
                   ];
                   this.props.onChangeFilters(filters);
-                }
-                }
+                }}
               />
             </Grid>
           }
@@ -169,7 +155,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.officer"
           field={
-            <Grid size={3} component={StyledItem}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <PublishedComponent
                 pubRef="policy.PolicyOfficerPicker"
                 withNull={true}
@@ -198,7 +184,7 @@ class PolicyFilter extends Component {
             id={`PolicyFilter.${date}Date`}
             key={`PolicyFilter.${date}Date`}
             field={
-              <Grid size={3}>
+              <Grid size={GRID_RESPONSIVE_STANDARD}>
                 <Grid container>
                   <Grid size={6} component={StyledItem}>
                     <PublishedComponent
@@ -251,7 +237,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.type"
           field={
-            <Grid size={2} component={StyledItem}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <PublishedComponent
                 pubRef="policy.PolicyStagePicker"
                 withNull={true}
@@ -273,7 +259,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.status"
           field={
-            <Grid size={2} component={StyledItem}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <PublishedComponent
                 pubRef="policy.PolicyStatusPicker"
                 withNull={true}
@@ -297,7 +283,7 @@ class PolicyFilter extends Component {
             id="PolicyFilter.balanceUnder"
             key={b}
             field={
-              <Grid size={2} component={StyledItem}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                 <AmountInput
                   module="policy"
                   label={`PolicyFilter.${b}`}
@@ -320,7 +306,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.showInactive"
           field={
-            <Grid size={2} component={StyledItem}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -347,7 +333,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.showHistory"
           field={
-            <Grid size={2} component={StyledItem}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -382,6 +368,4 @@ class PolicyFilter extends Component {
 
 export { StyledDialogTitle };
 export { PolicyFilter };
-export default withModulesManager(
-  injectIntl(PolicyFilter)
-);
+export default withModulesManager(injectIntl(PolicyFilter));

@@ -7,6 +7,8 @@ import {
   Contributions,
   AmountInput,
   ProgressOrError,
+  GRID_RESPONSIVE_STANDARD,
+  GRID_RESPONSIVE_FULL,
 } from "@openimis/fe-core";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -42,9 +44,9 @@ class PolicyValuesPanel extends Component {
 
     let readOnly = contributionPanelReadOnly;
     return (
-      <Grid size={12}>
+      <Grid size={GRID_RESPONSIVE_FULL}>
         <StyledPaper>
-          <Grid container component={StyledTableTitle}>
+          <Grid container component={StyledTableTitle} spacing={1}>
             <Grid component={StyledTableTitle}>
               <Typography>
                 <FormattedMessage module="policy" id={title} />
@@ -52,9 +54,9 @@ class PolicyValuesPanel extends Component {
             </Grid>
           </Grid>
           <Divider />
-          <Grid container component={StyledItem}>
-            <Grid container alignItems="center" justify="start">
-              <Grid size={3} component={StyledItem}>
+          <Grid container component={StyledItem} spacing={2}>
+            <Grid container alignItems="center" justifyContent="flex-start" spacing={1}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                 <ProgressOrError
                   progress={fetchingPolicyValues}
                   error={errorPolicyValues}
@@ -68,7 +70,7 @@ class PolicyValuesPanel extends Component {
                   />
                 )}
               </Grid>
-              <Grid size={3} component={StyledItem}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                 <AmountInput
                   module="policy"
                   label="Policy.sumPremiums"
@@ -77,7 +79,7 @@ class PolicyValuesPanel extends Component {
                   readOnly={readOnly}
                 />
               </Grid>
-              <Grid size={3} component={StyledItem}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                 <AmountInput
                   module="policy"
                   label="Policy.balance"
@@ -87,15 +89,15 @@ class PolicyValuesPanel extends Component {
                 />
               </Grid>
             </Grid>
-            <Grid container alignItems="center">
-              <Grid size={12}>
+            <Grid container alignItems="center" spacing={1}>
+              <Grid size={GRID_RESPONSIVE_FULL}>
                 <Divider style={{ margin: "10px 0" }} />
               </Grid>
-              <Grid size={3} />
-              <Grid size={3} component={StyledItemCenter}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} />
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItemCenter}>
                 <Typography variant="body1">General</Typography>
               </Grid>
-              <Grid size={3} component={StyledItemCenter}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItemCenter}>
                 <Typography variant="body1">In-Patient</Typography>
               </Grid>
               <Grid size={3} component={StyledItemCenter}>

@@ -33,6 +33,8 @@ import {
   decodeId,
   AmountInput,
   TextInput,
+  GRID_RESPONSIVE_STANDARD,
+  GRID_RESPONSIVE_FULL,
 } from "@openimis/fe-core";
 import {
   policyLabel,
@@ -228,17 +230,17 @@ class PolicyMasterPanel extends FormPanel {
     }
 
     return (
-      <Grid container>
-        <Grid size={12}>
+      <Grid container spacing={2}>
+        <Grid size={GRID_RESPONSIVE_FULL}>
           <StyledPaper>
-            <Grid container component={StyledTableTitle}>
-              <Grid size={3} component={StyledTableTitle}>
+            <Grid container component={StyledTableTitle} spacing={1}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledTableTitle}>
                 <Typography>
                   <FormattedMessage module="policy" id={title} />
                 </Typography>
               </Grid>
               <Grid size={9}>
-                <Grid container justify="flex-end">
+                <Grid container justifyContent="flex-end">
                   {!!actions &&
                     actions.map((a, idx) => {
                       return (
@@ -255,8 +257,8 @@ class PolicyMasterPanel extends FormPanel {
               </Grid>
             </Grid>
             <Divider />
-            <Grid container component={StyledItem}>
-              <Grid size={3} component={StyledItem}>
+            <Grid container component={StyledItem} spacing={2}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                 <PublishedComponent
                   pubRef="core.DatePicker"
                   value={!!edited ? edited.enrollDate : null}
@@ -275,7 +277,7 @@ class PolicyMasterPanel extends FormPanel {
                   onChange={(v) => this.updateAttribute("enrollDate", v)}
                 />
               </Grid>
-              <Grid size={3} component={StyledItem}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                 <PublishedComponent
                   pubRef="core.DatePicker"
                   value={!!edited ? edited.effectiveDate : null}
@@ -298,7 +300,7 @@ class PolicyMasterPanel extends FormPanel {
                   <Grid
                     key={`policy-${date}`}
                     item
-                    size={3}
+                    size={GRID_RESPONSIVE_STANDARD}
                     component={StyledItem}
                   >
                     <PublishedComponent
@@ -310,7 +312,7 @@ class PolicyMasterPanel extends FormPanel {
                     />
                   </Grid>
                 ))}
-              <Grid size={3} component={StyledItem}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                 <PublishedComponent
                   pubRef="product.ProductPicker"
                   value={!!edited && edited.product}
@@ -336,7 +338,7 @@ class PolicyMasterPanel extends FormPanel {
                   enrollmentDate={edited?.enrollDate ?? null}
                 />
               </Grid>
-              <Grid size={3} component={StyledItem}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                 <PublishedComponent
                   pubRef="policy.PolicyOfficerPicker"
                   value={!!edited && edited.officer}
@@ -367,7 +369,7 @@ class PolicyMasterPanel extends FormPanel {
                   }
                 />
               </Grid>
-              <Grid size={3} component={StyledItem}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                 <PublishedComponent
                   pubRef="policy.PolicyStatusPicker"
                   value={!!edited && edited.status}
@@ -378,8 +380,8 @@ class PolicyMasterPanel extends FormPanel {
                 />
               </Grid>
               {!edited_id && (
-                <Grid size={12}>
-                  <Grid size={3} component={StyledItem}>
+                <Grid size={GRID_RESPONSIVE_FULL}>
+                  <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -402,7 +404,7 @@ class PolicyMasterPanel extends FormPanel {
               )}
               {edited?.isPaid && (
                 <>
-                  <Grid size={12} component={StyledItem}>
+                  <Grid size={GRID_RESPONSIVE_FULL} component={StyledItem}>
                     <Typography variant="subtitle1">
                       <FormattedMessage
                         module="policy"
@@ -418,7 +420,7 @@ class PolicyMasterPanel extends FormPanel {
                       </Typography>
                     </i>
                   </Grid>
-                  <Grid size={3} component={StyledItem}>
+                  <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                     <TextInput
                       module="contribution"
                       label="contribution.receipt"
@@ -429,7 +431,7 @@ class PolicyMasterPanel extends FormPanel {
                       }
                     />
                   </Grid>
-                  <Grid size={3} component={StyledItem}>
+                  <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                     <PublishedComponent
                       pubRef="payer.PayerPicker"
                       withNull={true}
@@ -438,7 +440,7 @@ class PolicyMasterPanel extends FormPanel {
                       onChange={(p) => this.updateAttribute("payer", p)}
                     />
                   </Grid>
-                  <Grid size={3} component={StyledItem}>
+                  <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                     <PublishedComponent
                       pubRef="core.DatePicker"
                       module="contribution"
@@ -447,7 +449,7 @@ class PolicyMasterPanel extends FormPanel {
                       label="contribution.payDate"
                     />
                   </Grid>
-                  <Grid size={3} component={StyledItem}>
+                  <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                     <AmountInput
                       module="contribution"
                       label="contribution.amount"
@@ -456,7 +458,7 @@ class PolicyMasterPanel extends FormPanel {
                       displayZero={true}
                     />
                   </Grid>
-                  <Grid size={3} component={StyledItem}>
+                  <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                     <PublishedComponent
                       pubRef="contribution.PremiumPaymentTypePicker"
                       withNull={false}
