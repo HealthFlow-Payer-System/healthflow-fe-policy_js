@@ -25,11 +25,6 @@ const StyledDialogContent = styled("div")(({ theme }) => ({
 
 const StyledForm = styled("div")(({ theme }) => ({
   padding: 0,
-  "& .locationWrapper": {
-    paddingLeft: theme?.spacing ? theme.spacing(1) : 8,
-    paddingRight: theme?.spacing ? theme.spacing(1) : 8,
-    paddingTop: theme?.spacing ? theme.spacing(1) : 8,
-  },
 }));
 
 const StyledItem = styled("div")(({ theme }) => ({
@@ -78,7 +73,7 @@ class PolicyFilter extends Component {
   render() {
     const { intl, filters, onChangeFilters } = this.props;
     return (
-      <Grid container component={StyledForm} spacing={2}>
+      <Grid container component={StyledForm}>
         <ControlledField
           module="policy"
           id="PolicyFilter.location"
