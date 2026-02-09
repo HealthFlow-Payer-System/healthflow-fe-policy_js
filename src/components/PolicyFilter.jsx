@@ -79,16 +79,14 @@ class PolicyFilter extends Component {
           id="PolicyFilter.location"
           field={
             <Grid size={GRID_RESPONSIVE_FULL}>
-              <div className="locationWrapper">
-                <PublishedComponent
-                  pubRef="location.DetailedLocationFilter"
-                  withNull={true}
-                  filters={filters}
-                  onChangeFilters={onChangeFilters}
-                  anchor="location"
-                  split
-                />
-              </div>
+              <PublishedComponent
+                pubRef="location.DetailedLocationFilter"
+                withNull={true}
+                filters={filters}
+                onChangeFilters={onChangeFilters}
+                anchor="location"
+                split
+              />
             </Grid>
           }
         />
