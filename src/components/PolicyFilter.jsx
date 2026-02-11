@@ -13,6 +13,7 @@ import {
   AmountInput,
   GRID_RESPONSIVE_STANDARD,
   GRID_RESPONSIVE_FULL,
+  TextInput,
 } from "@openimis/fe-core";
 
 const StyledDialogTitle = styled("div")(({ theme }) => ({
@@ -68,6 +69,67 @@ class PolicyFilter extends Component {
       },
     ];
     this.props.onChangeFilters(filters);
+  };
+  _filterTextFieldValue = (k) => {
+    const { filters } = this.props;
+    return !!filters && !!filters[k] ? filters[k].value : "";
+  };
+  renderLastNameField = () => {
+    const { classes } = this.props;
+    return (
+      <ControlledField
+        module="insuree"
+        id="InsureeFilter.lastName"
+        field={
+          <Grid item xs={3} className={classes.item}>
+            <TextInput
+              module="insuree"
+              label="Insuree.lastName"
+              name="lastName"
+              value={this._filterTextFieldValue("lastName")}
+              onChange={(v) =>
+                this.debouncedOnChangeFilter([
+                  {
+                    id: "lastName",
+                    value: v,
+                    filter: `insureePolicies_Insuree_LastName_Icontains: "${v}"`,
+                  },
+                ])
+              }
+            />
+          </Grid>
+        }
+      />
+    );
+  };
+
+  renderGivenNameField = () => {
+    const { classes } = this.props;
+    return (
+      <ControlledField
+        module="insuree"
+        id="InsureeFilter.givenName"
+        field={
+          <Grid item xs={3} className={classes.item}>
+            <TextInput
+              module="insuree"
+              label="Insuree.otherNames"
+              name="givenName"
+              value={this._filterTextFieldValue("givenName")}
+              onChange={(v) =>
+                this.debouncedOnChangeFilter([
+                  {
+                    id: "givenName",
+                    value: v,
+                    filter: `insureePolicies_Insuree_OtherNames_Icontains: "${v}"`,
+                  },
+                ])
+              }
+            />
+          </Grid>
+        }
+      />
+    );
   };
 
   render() {
@@ -171,6 +233,33 @@ class PolicyFilter extends Component {
             </Grid>
           }
         />
+        <ControlledField
+          module="insuree"
+          id="InsureeFilter.chfId"
+          field={
+            <Grid item xs={3} className={classes.item}>
+              <TextInput
+                module="insuree"
+                label="Insuree.chfId"
+                name="chfId"
+                value={this._filterTextFieldValue("chfId")}
+                onChange={(v) =>
+                  this.debouncedOnChangeFilter([
+                    {
+                      id: "chfId",
+                      value: v,
+                      filter: `insureePolicies_Insuree_ChfId: "${v}"`,
+                    },
+                  ])
+                }
+              />
+            </Grid>
+          }
+        />
+        <>
+          {this.renderGivenNameField()}
+          {this.renderLastNameField()}
+        </>
         {["enroll", "start", "effective", "expiry"].map((date) => (
           <ControlledField
             module="policy"
