@@ -75,13 +75,12 @@ class PolicyFilter extends Component {
     return !!filters && !!filters[k] ? filters[k].value : "";
   };
   renderLastNameField = () => {
-    const { classes } = this.props;
     return (
       <ControlledField
         module="insuree"
         id="InsureeFilter.lastName"
         field={
-          <Grid item xs={3} className={classes.item}>
+          <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
             <TextInput
               module="insuree"
               label="Insuree.lastName"
@@ -104,13 +103,12 @@ class PolicyFilter extends Component {
   };
 
   renderGivenNameField = () => {
-    const { classes } = this.props;
     return (
       <ControlledField
         module="insuree"
         id="InsureeFilter.givenName"
         field={
-          <Grid item xs={3} className={classes.item}>
+          <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
             <TextInput
               module="insuree"
               label="Insuree.otherNames"
@@ -237,7 +235,7 @@ class PolicyFilter extends Component {
           module="insuree"
           id="InsureeFilter.chfId"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <TextInput
                 module="insuree"
                 label="Insuree.chfId"
