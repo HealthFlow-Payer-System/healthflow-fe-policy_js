@@ -6,7 +6,7 @@ import clsx from "clsx";
 import PolicyDetailsCollapse from "./PolicyDetailsCollapse";
 
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { Divider, Grid, Paper, Typography, FormControlLabel, Checkbox, IconButton } from "@material-ui/core";
+import { Divider, Grid, Paper, Typography, FormControlLabel, Checkbox, IconButton, Button } from "@material-ui/core";
 import { Add as AddIcon, Autorenew as RenewIcon, Delete as DeleteIcon, Pause as SuspendIcon } from "@material-ui/icons";
 
 import {
@@ -98,6 +98,11 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
       ...this.state,
       expandedPolicy: null
     };
+    this.hideSecondariesColumns = props.modulesManager.getConf(
+      "fe-policy",
+      "familyOrInsureePoliciesSummary.hideSecondariesColumns",
+      true
+    );
   }
 
   componentDidMount() {
@@ -259,6 +264,14 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
         "policies.nonHospitalCeiling",
         ...(this.showBalance ? ["policies.balance"] : [])
       ])
+      "policies.policyValue",
+      !this.hideSecondariesColumns ? (
+        "policies.deduction", 
+        "policies.hospitalDeduction", 
+        "policies.nonHospitalDeduction", 
+        "policies.ceiling", 
+        "policies.hospitalCeiling", 
+        "policies.nonHospitalCeiling") : null,
     ];
     h.push("", "", "");
     return h;
@@ -298,7 +311,7 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
   rowLocked = (policy) => !!policy.clientMutationId;
   canDelete = (policy) => !this.props.readOnly && canDeletePolicy(this.props.rights, policy);
   canSuspend = (policy) => !this.props.readOnly && canSuspendPolicy(this.props.rights, policy);
-  canRenew = (policy) => !this.props.readOnly && canRenewPolicy(this.props.rights, policy);
+  canRenew = (policy) => !this.props.readOnly && canRenewPolicy(this.props.rights, policy) && policy.policyValue != null
 
   togglePolicyDetails = (policyUuid) => {
     this.setState(prevState => {
@@ -315,6 +328,14 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
       (i) => formatDateFromISO(this.props.modulesManager, this.props.intl, i.enrollDate),
       (i) => formatDateFromISO(this.props.modulesManager, this.props.intl, i.expiryDate),
       (i) => formatMessage(this.props.intl, "policy", `policies.status.${i.status}`),
+      (i) => <AmountInput value={i.policyValue} readOnly />,
+      !this.hideSecondariesColumns ? (
+        (i) => i.ded,
+        (i) => i.dedInPatient,
+        (i) => i.dedOutPatient,
+        (i) => i.ceiling,
+        (i) => i.ceilingInPatient,
+        (i) => i.ceilingOutPatient) : null,
     ];
 
     if (!this.useCollapsibleDetails) {
@@ -336,9 +357,9 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
     f.push((i) =>
       !this.props.readOnly && this.canRenew(i)
         ? withTooltip(
-            <IconButton onClick={(e) => this.renewPolicy(i)}>
-              <RenewIcon />
-            </IconButton>,
+            <Button startIcon={<RenewIcon />} onClick={(e) => this.renewPolicy(i)}>
+              {formatMessage(this.props.intl, "policy", "action.RenewPolicy.buttonText")}
+            </Button>,
             formatMessage(this.props.intl, "policy", "action.RenewPolicy.tooltip")
           )
         : null
@@ -346,9 +367,9 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
     f.push((i) =>
       !this.props.readOnly && this.canSuspend(i)
         ? withTooltip(
-            <IconButton onClick={(e) => this.confirmSuspend(i)}>
-              <SuspendIcon />
-            </IconButton>,
+            <Button startIcon={<SuspendIcon />} onClick={(e) => this.confirmSuspend(i)}>
+              {formatMessage(this.props.intl, "policy", "action.SuspendPolicy.buttonText")}
+            </Button>,
             formatMessage(this.props.intl, "policy", "action.SuspendPolicy.tooltip")
           )
         : null
@@ -356,9 +377,9 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
     f.push((i) =>
       !this.props.readOnly && this.canDelete(i)
         ? withTooltip(
-            <IconButton onClick={(e) => this.confirmDelete(i)}>
-              <DeleteIcon />
-            </IconButton>,
+            <Button startIcon={<DeleteIcon />} onClick={(e) => this.confirmDelete(i)}>
+              {formatMessage(this.props.intl, "policy", "action.DeletePolicy.buttonText")}
+            </Button>,
             formatMessage(this.props.intl, "policy", "action.DeletePolicy.tooltip")
           )
         : null
@@ -412,9 +433,9 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
         : [
             {
               button: (
-                <IconButton onClick={this.addNewPolicy}>
-                  <AddIcon />
-                </IconButton>
+                <Button startIcon={<AddIcon />} onClick={this.addNewPolicy}>
+                  {formatMessage(intl, "policy", "action.AddPolicy.buttonText")}
+                </Button>
               ),
               tooltip: formatMessage(intl, "policy", "action.AddPolicy.tooltip"),
             },
