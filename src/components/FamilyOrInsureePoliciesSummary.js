@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { injectIntl } from "react-intl";
 import clsx from "clsx";
+import PolicyDetailsCollapse from "./PolicyDetailsCollapse";
 
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { Divider, Grid, Paper, Typography, FormControlLabel, Checkbox, IconButton, Button } from "@material-ui/core";
@@ -88,6 +89,15 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
       "familyOrInsureePoliciesSummary.orderByExpiryDate",
       "expiryDate"
     );
+    this.useCollapsibleDetails = props.modulesManager.getConf(
+      "fe-policy",
+      "familyOrInsureePoliciesSummary.useCollapsibleDetails",
+      true
+    );
+    this.state = {
+      ...this.state,
+      expandedPolicy: null
+    };
     this.hideSecondariesColumns = props.modulesManager.getConf(
       "fe-policy",
       "familyOrInsureePoliciesSummary.hideSecondariesColumns",
@@ -211,12 +221,20 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
 
   onChangeSelection = (i) => {
     const { selectPolicy, disableSelection } = this.props;
-
+  
     if (disableSelection) {
       return;
     }
-
+    if (this.useCollapsibleDetails && i && i[0]) {
+      this.togglePolicyDetails(i[0].policyUuid);
+    } else {
+      this.setState({ expandedPolicy: null });
+    }
+  
     selectPolicy(i[0] || null);
+    if (this.props.onChangeSelection) {
+      this.props.onChangeSelection(i);
+    }
   };
 
   toggleCheckbox = (key) => {
@@ -236,6 +254,16 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
       "policies.enrolmentDate",
       "policies.expiryDate",
       "policies.status",
+      ...(this.useCollapsibleDetails ? [] : [
+        "policies.policyValue",
+        "policies.deduction",
+        "policies.hospitalDeduction",
+        "policies.nonHospitalDeduction",
+        "policies.ceiling",
+        "policies.hospitalCeiling",
+        "policies.nonHospitalCeiling",
+        ...(this.showBalance ? ["policies.balance"] : [])
+      ])
       "policies.policyValue",
       !this.hideSecondariesColumns ? (
         "policies.deduction", 
@@ -245,9 +273,6 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
         "policies.hospitalCeiling", 
         "policies.nonHospitalCeiling") : null,
     ];
-    if (this.showBalance) {
-      h.push("policies.balance");
-    }
     h.push("", "", "");
     return h;
   };
@@ -288,6 +313,13 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
   canSuspend = (policy) => !this.props.readOnly && canSuspendPolicy(this.props.rights, policy);
   canRenew = (policy) => !this.props.readOnly && canRenewPolicy(this.props.rights, policy) && policy.policyValue != null
 
+  togglePolicyDetails = (policyUuid) => {
+    this.setState(prevState => {
+      const newState = prevState.expandedPolicy === policyUuid ? null : policyUuid;
+      return { expandedPolicy: newState };
+    });
+  };  
+  
   itemFormatters = () => {
     let f = [
       (i) => i.productCode,
@@ -305,8 +337,22 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
         (i) => i.ceilingInPatient,
         (i) => i.ceilingOutPatient) : null,
     ];
-    if (this.showBalance) {
-      f.push((i) => i.balance);
+
+    if (!this.useCollapsibleDetails) {
+      f = [
+        ...f,
+        (i) => <AmountInput value={i.policyValue} readOnly />,
+        (i) => i.ded,
+        (i) => i.dedInPatient,
+        (i) => i.dedOutPatient,
+        (i) => i.ceiling,
+        (i) => i.ceilingInPatient,
+        (i) => i.ceilingOutPatient,
+      ];
+      
+      if (this.showBalance) {
+        f.push((i) => i.balance);
+      }
     }
     f.push((i) =>
       !this.props.readOnly && this.canRenew(i)
@@ -356,22 +402,23 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
   itemIdentifier = (i) => i.policyUuid;
 
   render() {
-    const {
-      intl,
-      classes,
-      rights,
-      fetchingPolicies,
-      policies,
-      pageInfo,
+    const { 
+      classes, 
+      intl, 
+      pageInfo, 
+      policies = [], 
+      fetchingPolicies, 
       errorPolicies,
+      rights,
+      hideAddPolicyButton = false,
       family,
       insuree,
-      insureeEnquiry,
       readOnly,
-      className,
-      hideAddPolicyButton = false,
+      insureeEnquiry,
       disableSelection,
+      className,
     } = this.props;
+
     if ((!family || !family.uuid) && (!insuree || !insuree.uuid) && (!insureeEnquiry?.uuid))  {
       console.error(
         "FamilyOrInsureePoliciesSummary: No valid family, insuree, or insureeEnquiry found. " +
@@ -393,15 +440,12 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
               tooltip: formatMessage(intl, "policy", "action.AddPolicy.tooltip"),
             },
           ];
-
+    
+    const { expandedPolicy } = this.state;
+    
     return (
       <Paper className={clsx(classes.paper, className)}>
-        <Grid
-          container
-          justifyContent="space-between"
-          alignItems="center"
-          className={clsx(classes.paperHeader, classes.tableTitle)}
-        >
+        <Grid container justifyContent="space-between" className={clsx(classes.paperHeader, classes.tableTitle)}>
           <Grid item>
             <Typography className={classes.title}>{this.header()}</Typography>
           </Grid>
@@ -419,13 +463,11 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
                   label={formatMessage(intl, "policy", "policies.onlyActiveOrLastExpired")}
                 />
               </Grid>
-              {actions.map((a, idx) => {
-                return (
-                  <Grid item key={`form-action-${idx}`}>
-                    {withTooltip(a.button, a.tooltip)}
-                  </Grid>
-                );
-              })}
+              {Array.isArray(actions) && actions.map((a, idx) => (
+                <Grid item key={`form-action-${idx}`}>
+                  {withTooltip(a.button, a.tooltip)}
+                </Grid>
+              ))}
             </Grid>
           </Grid>
         </Grid>
@@ -434,24 +476,35 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
           module="policy"
           headers={this.headers()}
           headerActions={this.headerActions()}
-          itemFormatters={this.itemFormatters()}
-          itemIdentifier={this.itemIdentifier}
           items={policies}
           fetching={fetchingPolicies}
+          itemFormatters={this.itemFormatters()}
           error={errorPolicies}
           withSelection={disableSelection ? false : "single"}
-          onChangeSelection={this.onChangeSelection}
-          onDoubleClick={this.onDoubleClick}
           withPagination={true}
           rowsPerPageOptions={this.rowsPerPageOptions}
-          defaultPageSize={this.defaultPageSize}
           page={this.state.page}
           pageSize={this.state.pageSize}
-          count={pageInfo.totalCount}
+          count={pageInfo?.totalCount || 0}
           onChangePage={this.onChangePage}
           onChangeRowsPerPage={this.onChangeRowsPerPage}
           rowLocked={this.rowLocked}
+          onDoubleClick={this.onDoubleClick}
+          onChangeSelection={this.onChangeSelection}
         />
+        {this.useCollapsibleDetails && Array.isArray(policies) && policies.map(policy => {
+          const isOpen = expandedPolicy === policy?.policyUuid;
+          return (
+            <PolicyDetailsCollapse
+              key={policy?.policyUuid || Math.random()}
+              open={isOpen}
+              policy={policy}
+              modulesManager={this.props.modulesManager}
+              intl={intl}
+            />
+          );
+        })}
+
       </Paper>
     );
   }
