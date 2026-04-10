@@ -1,8 +1,11 @@
 import React from "react";
 import { useModulesManager, useTranslations } from "@openimis/fe-core";
 import { Grid, Typography, Box } from "@mui/material";
-import ThumbUp from "@mui/icons-material/ThumbUp";
-import ThumbDown from "@mui/icons-material/ThumbDown";
+import { GetIconComponent } from "@openimis/fe-core";
+
+const ThumbUp = GetIconComponent("ThumbUp")
+
+const ThumbDown = GetIconComponent("ThumbDown")
 
 const Thumb = (props) => {
   if (props.isOk) {

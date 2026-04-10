@@ -6,7 +6,12 @@ import clsx from "clsx";
 
 import { styled } from "@mui/material/styles";
 import { Divider, Grid, Paper, Typography, FormControlLabel, Checkbox, IconButton, Button } from "@mui/material";
-import { Add as AddIcon, Autorenew as RenewIcon, Delete as DeleteIcon, Pause as SuspendIcon } from "@mui/icons-material";
+import { GetIconComponent } from "@openimis/fe-core";
+const AddIcon = GetIconComponent("Add")
+const RenewIcon = GetIconComponent("Autorenew")
+const DeleteIcon = GetIconComponent("Delete")
+const SuspendIcon = GetIconComponent("Pause")
+
 
 import {
   Table,

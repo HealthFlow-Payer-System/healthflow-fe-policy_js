@@ -12,11 +12,10 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import {
-  Autorenew as RenewIcon,
-  Delete as DeleteIcon,
-  Pause as SuspendIcon,
-} from "@mui/icons-material";
+import { GetIconComponent } from "@openimis/fe-core";
+const RenewIcon = GetIconComponent("Autorenew")
+const DeleteIcon = GetIconComponent("Delete")
+const SuspendIcon = GetIconComponent("Pause")
 import {
   formatMessage,
   formatMessageWithValues,

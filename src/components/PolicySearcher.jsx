@@ -3,13 +3,13 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import { Button, Tooltip } from "@mui/material";
-import {
-  People as PeopleIcon,
-  Tab as TabIcon,
-  Autorenew as RenewIcon,
-  Delete as DeleteIcon,
-  Pause as SuspendIcon,
-} from "@mui/icons-material";
+import { GetIconComponent } from "@openimis/fe-core";
+const PeopleIcon = GetIconComponent("People")
+const TabIcon = GetIconComponent("Tab")
+const RenewIcon = GetIconComponent("Autorenew")
+const DeleteIcon = GetIconComponent("Delete")
+const SuspendIcon = GetIconComponent("Pause")
+
 import {
   withModulesManager,
   formatMessageWithValues,

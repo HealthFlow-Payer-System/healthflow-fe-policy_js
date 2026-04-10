@@ -1,5 +1,6 @@
 import React from "react";
-import { ListAlt } from "@mui/icons-material";
+import { GetIconComponent } from "@openimis/fe-core";
+const ListAlt = GetIconComponent("ListAlt")
 import PolicyOfficerPicker from "./pickers/PolicyOfficerPicker";
 import PolicyStagePicker from "./pickers/PolicyStagePicker";
 import PolicyStatusPicker from "./pickers/PolicyStatusPicker";
