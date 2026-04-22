@@ -263,7 +263,7 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
         "policies.hospitalCeiling",
         "policies.nonHospitalCeiling",
         ...(this.showBalance ? ["policies.balance"] : [])
-      ])
+      ]),
       "policies.policyValue",
       !this.hideSecondariesColumns ? (
         "policies.deduction", 
