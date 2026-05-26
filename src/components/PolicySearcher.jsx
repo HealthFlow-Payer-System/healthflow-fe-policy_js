@@ -14,6 +14,7 @@ import {
   withModulesManager,
   formatMessageWithValues,
   formatDateFromISO,
+  formatAmount,
   formatMessage,
   withHistory,
   historyPush,
@@ -263,14 +264,7 @@ class PolicySearcher extends Component {
           this.props.intl,
           policy.enrollDate
         ),
-      (policy) => (
-        <PublishedComponent
-          pubRef="insuree.FamilyPicker"
-          value={policy.family}
-          readOnly={true}
-          withLabel={false}
-        />
-      ),
+      (policy) => `${policy.family.headInsuree.lastName} ${policy.family.headInsuree.otherNames}`,
       (policy) =>
         formatDateFromISO(
           this.props.modulesManager,
@@ -289,40 +283,12 @@ class PolicySearcher extends Component {
           this.props.intl,
           policy.expiryDate
         ),
-      (policy) => (
-        <PublishedComponent
-          pubRef="product.ProductPicker"
-          value={policy.product}
-          readOnly={true}
-          withLabel={false}
-        />
-      ),
-      (policy) => (
-        <PublishedComponent
-          pubRef="policy.PolicyOfficerPicker"
-          value={policy.officer}
-          readOnly={true}
-          withLabel={false}
-        />
-      ),
-      (policy) => (
-        <PublishedComponent
-          pubRef="policy.PolicyStagePicker"
-          value={policy.stage}
-          readOnly={true}
-          withLabel={false}
-        />
-      ),
-      (policy) => (
-        <PublishedComponent
-          pubRef="policy.PolicyStatusPicker"
-          value={policy.status}
-          readOnly={true}
-          withLabel={false}
-        />
-      ),
-      (policy) => <AmountInput value={policy.value} readOnly={true} />,
-      (policy) => <AmountInput value={policyBalance(policy)} readOnly={true} />,
+      (policy) => `${policy.product.code}`,
+      (policy) => `${policy.officer.code}`,
+      (policy) => formatMessage(this.props.intl, "policy", `PolicyStage.${policy.stage}`),
+      (policy) => formatMessage(this.props.intl, "policy", `PolicyStatus.${policy.status}`),
+      (policy) => formatAmount(this.props.modulesManager, this.props.intl, policy.value),
+      (policy) => formatAmount(this.props.modulesManager, this.props.intl, policyBalance(policy)),
       filters?.showHistory?.value
         ? (policy) =>
             formatDateFromISO(
