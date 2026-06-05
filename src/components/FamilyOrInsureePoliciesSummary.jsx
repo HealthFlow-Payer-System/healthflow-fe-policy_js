@@ -3,11 +3,16 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { injectIntl } from "react-intl";
 import clsx from "clsx";
+import { styled } from "@mui/material/styles";
+import { Divider, Grid, Paper, Typography, FormControlLabel, Checkbox, IconButton, Button } from "@mui/material";
+import { GetIconComponent } from "@openimis/fe-core";
 import PolicyDetailsCollapse from "./PolicyDetailsCollapse";
 
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import { Divider, Grid, Paper, Typography, FormControlLabel, Checkbox, IconButton, Button } from "@material-ui/core";
-import { Add as AddIcon, Autorenew as RenewIcon, Delete as DeleteIcon, Pause as SuspendIcon } from "@material-ui/icons";
+const AddIcon = GetIconComponent("Add")
+const RenewIcon = GetIconComponent("Autorenew")
+const DeleteIcon = GetIconComponent("Delete")
+const SuspendIcon = GetIconComponent("Pause")
+
 
 import {
   Table,
@@ -29,26 +34,34 @@ import { fetchFamilyOrInsureePolicies, selectPolicy, deletePolicy, suspendPolicy
 import { RIGHT_POLICY_ADD } from "../constants";
 import { policyLabel, canDeletePolicy, canSuspendPolicy, canRenewPolicy } from "../utils/utils";
 
-const styles = (theme) => ({
-  paper: {
-    ...theme.paper.paper,
-  },
-  paperHeader: {
-    ...theme.paper.header,
-  },
-  tableTitle: theme.table.title,
-  title: {
-    ...theme.table.title,
-    padding: 0,
-  },
-  fab: theme.fab,
-  button: {
-    margin: theme.spacing(1),
-  },
-  item: {
-    padding: theme.spacing(1),
-  },
-});
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  ...theme?.paper?.paper ?? {},
+}));
+
+const StyledPaperHeader = styled('div')(({ theme }) => ({
+  ...theme?.paper?.header ?? {},
+}));
+
+const StyledTableTitle = styled('div')(({ theme }) => ({
+  ...theme?.table?.title ?? {},
+}));
+
+const StyledTitle = styled('div')(({ theme }) => ({
+  ...theme?.table?.title ?? {},
+  padding: 0,
+}));
+
+const StyledFab = styled('div')(({ theme }) => ({
+  ...theme?.fab ?? {},
+}));
+
+const StyledButton = styled('div')(({ theme }) => ({
+  margin: theme?.spacing?.(1),
+}));
+
+const StyledItem = styled('div')(({ theme }) => ({
+  padding: theme?.spacing?.(1),
+}));
 
 class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
   state = {
@@ -402,14 +415,14 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
   itemIdentifier = (i) => i.policyUuid;
 
   render() {
-    const { 
-      classes, 
-      intl, 
-      pageInfo, 
-      policies = [], 
-      fetchingPolicies, 
-      errorPolicies,
+    const {
+      classes,
+      intl,
       rights,
+      fetchingPolicies,
+      policies,
+      pageInfo,
+      errorPolicies,
       hideAddPolicyButton = false,
       family,
       insuree,
@@ -444,14 +457,19 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
     const { expandedPolicy } = this.state;
     
     return (
-      <Paper className={clsx(classes.paper, className)}>
-        <Grid container justifyContent="space-between" className={clsx(classes.paperHeader, classes.tableTitle)}>
-          <Grid item>
-            <Typography className={classes.title}>{this.header()}</Typography>
+      <StyledPaper className={className}>
+        <Grid
+          container
+          justifyContent="space-between"
+          alignItems="center"
+          className={clsx("paperHeader", "tableTitle")}
+        >
+          <Grid>
+            <StyledTitle>{this.header()}</StyledTitle>
           </Grid>
-          <Grid item>
+          <Grid>
             <Grid container alignItems="center" spacing={3}>
-              <Grid item>
+              <Grid>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -463,11 +481,13 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
                   label={formatMessage(intl, "policy", "policies.onlyActiveOrLastExpired")}
                 />
               </Grid>
-              {Array.isArray(actions) && actions.map((a, idx) => (
-                <Grid item key={`form-action-${idx}`}>
-                  {withTooltip(a.button, a.tooltip)}
-                </Grid>
-              ))}
+              {actions.map((a, idx) => {
+                return (
+                  <Grid key={`form-action-${idx}`}>
+                    {withTooltip(a.button, a.tooltip)}
+                  </Grid>
+                );
+              })}
             </Grid>
           </Grid>
         </Grid>
@@ -492,6 +512,7 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
           onDoubleClick={this.onDoubleClick}
           onChangeSelection={this.onChangeSelection}
         />
+
         {this.useCollapsibleDetails && Array.isArray(policies) && policies.map(policy => {
           const isOpen = expandedPolicy === policy?.policyUuid;
           return (
@@ -504,8 +525,7 @@ class FamilyOrInsureePoliciesSummary extends PagedDataHandler {
             />
           );
         })}
-
-      </Paper>
+      </StyledPaper>
     );
   }
 }
@@ -532,11 +552,13 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
+export { StyledPaper };
+export { FamilyOrInsureePoliciesSummary };
 export default withHistory(
   withModulesManager(
     connect(
       mapStateToProps,
       mapDispatchToProps
-    )(injectIntl(withTheme(withStyles(styles)(FamilyOrInsureePoliciesSummary))))
+    )(injectIntl(FamilyOrInsureePoliciesSummary))
   )
 );

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import _debounce from "lodash/debounce";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import { injectIntl } from "react-intl";
-import { Checkbox, FormControlLabel, Grid } from "@material-ui/core";
+import { Checkbox, FormControlLabel, Grid } from "@mui/material";
 import {
   withModulesManager,
   formatMessage,
@@ -11,20 +11,30 @@ import {
   PublishedComponent,
   ControlledField,
   AmountInput,
+  GRID_RESPONSIVE_STANDARD,
+  GRID_RESPONSIVE_FULL,
   TextInput,
 } from "@openimis/fe-core";
 
-const styles = (theme) => ({
-  dialogTitle: theme.dialog.title,
-  dialogContent: theme.dialog.content,
-  form: {
-    padding: 0,
-  },
-  item: {
-    padding: theme.spacing(1),
-  },
-  paperDivider: theme.paper.divider,
-});
+const StyledDialogTitle = styled("div")(({ theme }) => ({
+  ...(theme?.dialog?.title ?? {}),
+}));
+
+const StyledDialogContent = styled("div")(({ theme }) => ({
+  ...(theme?.dialog?.content ?? {}),
+}));
+
+const StyledForm = styled("div")(({ theme }) => ({
+  padding: 0,
+}));
+
+const StyledItem = styled("div")(({ theme }) => ({
+  padding: theme?.spacing?.(1),
+}));
+
+const StyledPaperDivider = styled("div")(({ theme }) => ({
+  ...(theme?.paper?.divider ?? {}),
+}));
 
 const POLICY_FILTER_CONTRIBUTION_KEY = "policy.Filter";
 
@@ -50,33 +60,6 @@ class PolicyFilter extends Component {
     this.props.onChangeFilters(filters);
   };
 
-  _onChangeCoarseLocation = (i, v, s) => {
-    let filters = [
-      {
-        id: `location_${i}`,
-        value: v,
-        filter: !v
-          ? null
-          : `${i === 0 ? "regionId" : "districtId"}: ${decodeId(v.id)}`,
-      },
-    ];
-    if (!v && i === 0) {
-      filters.push({
-        id: `location_1`,
-        value: null,
-        filter: null,
-      });
-    }
-    if (!!v && i === 1) {
-      filters.push({
-        id: `location_0`,
-        value: v.parent,
-        filter: `regionId : ${decodeId(v.parent.id)}`,
-      });
-    }
-    this.props.onChangeFilters(filters);
-  };
-
   _onChangeRef = (k, v, s) => {
     let filters = [
       {
@@ -92,13 +75,12 @@ class PolicyFilter extends Component {
     return !!filters && !!filters[k] ? filters[k].value : "";
   };
   renderLastNameField = () => {
-    const { classes } = this.props;
     return (
       <ControlledField
         module="insuree"
         id="InsureeFilter.lastName"
         field={
-          <Grid item xs={3} className={classes.item}>
+          <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
             <TextInput
               module="insuree"
               label="Insuree.lastName"
@@ -118,16 +100,15 @@ class PolicyFilter extends Component {
         }
       />
     );
-  }
+  };
 
   renderGivenNameField = () => {
-    const { classes } = this.props;
     return (
       <ControlledField
         module="insuree"
         id="InsureeFilter.givenName"
         field={
-          <Grid item xs={3} className={classes.item}>
+          <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
             <TextInput
               module="insuree"
               label="Insuree.otherNames"
@@ -147,23 +128,24 @@ class PolicyFilter extends Component {
         }
       />
     );
-  }
+  };
 
   render() {
-    const { intl, classes, filters, onChangeFilters } = this.props;
+    const { intl, filters, onChangeFilters } = this.props;
     return (
-      <Grid container className={classes.form}>
+      <Grid container component={StyledForm}>
         <ControlledField
           module="policy"
           id="PolicyFilter.location"
           field={
-            <Grid item xs={6}>
+            <Grid size={GRID_RESPONSIVE_FULL}>
               <PublishedComponent
-                pubRef="location.CoarseLocationFilter"
+                pubRef="location.DetailedLocationFilter"
                 withNull={true}
                 filters={filters}
-                onChange={this._onChangeCoarseLocation}
+                onChangeFilters={onChangeFilters}
                 anchor="location"
+                split
               />
             </Grid>
           }
@@ -172,7 +154,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.product"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <PublishedComponent
                 pubRef="product.ProductPicker"
                 withNull={true}
@@ -198,11 +180,15 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.ConfirmationType"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <PublishedComponent
                 pubRef="insuree.ConfirmationTypePicker"
                 withNull={true}
-                nullLabel={formatMessage(intl, "insuree", "Family.ConfirmationType.null")}
+                nullLabel={formatMessage(
+                  intl,
+                  "insuree",
+                  "Family.ConfirmationType.null"
+                )}
                 value={this._filterValue("confirmationType")}
                 onChange={(k) => {
                   let filters = [
@@ -213,8 +199,7 @@ class PolicyFilter extends Component {
                     },
                   ];
                   this.props.onChangeFilters(filters);
-                }
-                }
+                }}
               />
             </Grid>
           }
@@ -223,7 +208,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.officer"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <PublishedComponent
                 pubRef="policy.PolicyOfficerPicker"
                 withNull={true}
@@ -250,7 +235,7 @@ class PolicyFilter extends Component {
           module="insuree"
           id="InsureeFilter.chfId"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <TextInput
                 module="insuree"
                 label="Insuree.chfId"
@@ -279,9 +264,9 @@ class PolicyFilter extends Component {
             id={`PolicyFilter.${date}Date`}
             key={`PolicyFilter.${date}Date`}
             field={
-              <Grid item xs={3}>
+              <Grid size={GRID_RESPONSIVE_STANDARD}>
                 <Grid container>
-                  <Grid item xs={6} className={classes.item}>
+                  <Grid size={6} component={StyledItem}>
                     <PublishedComponent
                       pubRef="core.DatePicker"
                       value={
@@ -302,7 +287,7 @@ class PolicyFilter extends Component {
                       }
                     />
                   </Grid>
-                  <Grid item xs={6} className={classes.item}>
+                  <Grid size={6} component={StyledItem}>
                     <PublishedComponent
                       pubRef="core.DatePicker"
                       value={
@@ -332,7 +317,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.type"
           field={
-            <Grid item xs={2} className={classes.item}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <PublishedComponent
                 pubRef="policy.PolicyStagePicker"
                 withNull={true}
@@ -354,7 +339,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.status"
           field={
-            <Grid item xs={2} className={classes.item}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <PublishedComponent
                 pubRef="policy.PolicyStatusPicker"
                 withNull={true}
@@ -378,7 +363,7 @@ class PolicyFilter extends Component {
             id="PolicyFilter.balanceUnder"
             key={b}
             field={
-              <Grid item xs={2} className={classes.item}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                 <AmountInput
                   module="policy"
                   label={`PolicyFilter.${b}`}
@@ -401,7 +386,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.showInactive"
           field={
-            <Grid item xs={2} className={classes.item}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -428,7 +413,7 @@ class PolicyFilter extends Component {
           module="policy"
           id="PolicyFilter.showHistory"
           field={
-            <Grid item xs={2} className={classes.item}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -461,6 +446,6 @@ class PolicyFilter extends Component {
   }
 }
 
-export default withModulesManager(
-  injectIntl(withTheme(withStyles(styles)(PolicyFilter)))
-);
+export { StyledDialogTitle };
+export { PolicyFilter };
+export default withModulesManager(injectIntl(PolicyFilter));

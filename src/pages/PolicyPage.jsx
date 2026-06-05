@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import {
   historyPush,
   withModulesManager,
@@ -14,9 +14,9 @@ import { policyLabel } from "../utils/utils";
 import { createPolicy, renewPolicy, updatePolicy } from "../actions";
 import { POLICY_STAGE_NEW, POLICY_STAGE_RENEW } from "../constants";
 
-const styles = (theme) => ({
-  page: theme.page,
-});
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme?.page ?? {},
+}));
 
 class PolicyPage extends Component {
   save = (policy) => {
@@ -57,9 +57,9 @@ class PolicyPage extends Component {
   };
 
   render() {
-    const { classes, policy_uuid, family_uuid, renew, modulesManager } = this.props;
+    const { policy_uuid, family_uuid, renew, modulesManager } = this.props;
     return (
-      <div className={classes.page}>
+      <StyledPage>
         <PolicyForm
           key={`${policy_uuid}-${family_uuid}`}
           policy_uuid={policy_uuid !== "_NEW_" ? policy_uuid : null}
@@ -70,7 +70,7 @@ class PolicyPage extends Component {
           save={this.save}
           renew={renew}
         />
-      </div>
+      </StyledPage>
     );
   }
 }
@@ -92,13 +92,15 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
+export { StyledPage };
+export { PolicyPage };
 export default injectIntl(
   withModulesManager(
     withHistory(
       connect(
         mapStateToProps,
         mapDispatchToProps
-      )(withTheme(withStyles(styles)(PolicyPage)))
+      )(PolicyPage)
     )
   )
 );

@@ -1,23 +1,32 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import { Paper, Grid, Typography, Divider } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
+import { Paper, Grid, Typography, Divider } from "@mui/material";
 import {
   FormattedMessage,
   Contributions,
   AmountInput,
   ProgressOrError,
+  GRID_RESPONSIVE_STANDARD,
+  GRID_RESPONSIVE_FULL,
 } from "@openimis/fe-core";
 
-const styles = (theme) => ({
-  paper: theme.paper.paper,
-  tableTitle: theme.table.title,
-  item: theme.paper.item,
-  itemcenter: {
-    ...theme.paper.item,
-    textAlign: "center",
-  },
-});
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  ...theme?.paper?.paper ?? {},
+}));
+
+const StyledTableTitle = styled('div')(({ theme }) => ({
+  ...theme?.table?.title ?? {},
+}));
+
+const StyledItem = styled('div')(({ theme }) => ({
+  ...theme?.paper?.item ?? {},
+}));
+
+const StyledItemCenter = styled('div')(({ theme }) => ({
+  ...theme?.paper?.item ?? {},
+  textAlign: "center",
+}));
 
 const POLICY_POLICY_VALUES_CONTRIBUTION_KEY = "policy.PolicyValues";
 const POLICY_POLICY_VALUES_PANELS_CONTRIBUTION_KEY =
@@ -26,7 +35,6 @@ const POLICY_POLICY_VALUES_PANELS_CONTRIBUTION_KEY =
 class PolicyValuesPanel extends Component {
   render() {
     const {
-      classes,
       title = "Policy.values.title",
       contributionPanelReadOnly = true,
       edited,
@@ -36,19 +44,19 @@ class PolicyValuesPanel extends Component {
 
     let readOnly = contributionPanelReadOnly;
     return (
-      <Grid item xs={12}>
-        <Paper className={classes.paper}>
-          <Grid container className={classes.tableTitle}>
-            <Grid item className={classes.tableTitle}>
+      <Grid size={GRID_RESPONSIVE_FULL}>
+        <StyledPaper>
+          <Grid container component={StyledTableTitle} spacing={1}>
+            <Grid component={StyledTableTitle}>
               <Typography>
                 <FormattedMessage module="policy" id={title} />
               </Typography>
             </Grid>
           </Grid>
           <Divider />
-          <Grid container className={classes.item}>
-            <Grid container alignItems="center" justify="start">
-              <Grid item xs={3} className={classes.item}>
+          <Grid container component={StyledItem} spacing={2}>
+            <Grid container alignItems="center" justifyContent="flex-start" spacing={1}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                 <ProgressOrError
                   progress={fetchingPolicyValues}
                   error={errorPolicyValues}
@@ -62,7 +70,7 @@ class PolicyValuesPanel extends Component {
                   />
                 )}
               </Grid>
-              <Grid item xs={3} className={classes.item}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                 <AmountInput
                   module="policy"
                   label="Policy.sumPremiums"
@@ -71,7 +79,7 @@ class PolicyValuesPanel extends Component {
                   readOnly={readOnly}
                 />
               </Grid>
-              <Grid item xs={3} className={classes.item}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
                 <AmountInput
                   module="policy"
                   label="Policy.balance"
@@ -81,45 +89,45 @@ class PolicyValuesPanel extends Component {
                 />
               </Grid>
             </Grid>
-            <Grid container alignItems="center">
-              <Grid item xs={12}>
+            <Grid container alignItems="center" spacing={1}>
+              <Grid size={GRID_RESPONSIVE_FULL}>
                 <Divider style={{ margin: "10px 0" }} />
               </Grid>
-              <Grid item xs={3} />
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} />
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItemCenter}>
                 <Typography variant="body1">General</Typography>
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItemCenter}>
                 <Typography variant="body1">In-Patient</Typography>
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <Typography variant="body1">Out-Patient</Typography>
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <Typography variant="body1">Deductible</Typography>
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimDedG} readOnly={readOnly} />
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimDedIp} readOnly={readOnly} />
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimDedOp} readOnly={readOnly} />
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <Typography variant="body1">Remunerated Health Care</Typography>
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimRemG} readOnly={readOnly} />
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <AmountInput
                   value={edited.sunmClaimRemIp}
                   readOnly={readOnly}
                 />
               </Grid>
-              <Grid item xs={3} className={classes.itemcenter}>
+              <Grid size={3} component={StyledItemCenter}>
                 <AmountInput value={edited.sumClaimRemOp} readOnly={readOnly} />
               </Grid>
             </Grid>
@@ -129,7 +137,7 @@ class PolicyValuesPanel extends Component {
               contributionKey={POLICY_POLICY_VALUES_CONTRIBUTION_KEY}
             />
           </Grid>
-        </Paper>
+        </StyledPaper>
         <Contributions
           {...this.props}
           updateAttribute={this.updateAttribute}
@@ -146,6 +154,5 @@ const mapStateToProps = (state) => ({
   policyValues: state.policy.policyValues,
 });
 
-export default withTheme(
-  withStyles(styles)(connect(mapStateToProps)(PolicyValuesPanel))
-);
+export { StyledPaper };
+export default connect(mapStateToProps)(PolicyValuesPanel);

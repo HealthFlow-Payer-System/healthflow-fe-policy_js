@@ -1,5 +1,6 @@
 import React from "react";
-import { ListAlt } from "@material-ui/icons";
+import { GetIconComponent } from "@openimis/fe-core";
+const ListAlt = GetIconComponent("ListAlt")
 import PolicyOfficerPicker from "./pickers/PolicyOfficerPicker";
 import PolicyStagePicker from "./pickers/PolicyStagePicker";
 import PolicyStatusPicker from "./pickers/PolicyStatusPicker";
@@ -107,17 +108,20 @@ const DEFAULT_CONFIG = {
     { key: "policy.route.policy", ref: ROUTE_POLICY_POLICY },
   ],
   "core.Router": [
-    { path: ROUTE_POLICY_POLICIES, component: PoliciesPage },
+    { 
+      path: ROUTE_POLICY_POLICIES,
+      component: PoliciesPage,
+      text: "policy.menu.policies",
+      icon: "ListAlt",
+      rights :[RIGHT_POLICY],
+      id: 'insuree.policies'
+    },
     { path: ROUTE_POLICY_POLICY + "/:policy_uuid?/:family_uuid?/:renew?", component: PolicyPage },
   ],
   "policy.Policy.panels": [PolicyValuesPanel],
   "insuree.MainMenu": [
     {
-      text: <FormattedMessage module="policy" id="menu.policies" />,
-      icon: <ListAlt />,
-      route: "/" + ROUTE_POLICY_POLICIES,
-      filter: rights => rights.includes(RIGHT_POLICY),
-      id: 'insuree.policies'
+      route:  ROUTE_POLICY_POLICIES,
     },
   ],
   "insuree.EnquiryDialog": [FamilyOrInsureePoliciesSummary, InsureeEligibilityEnquiry, InsureeEligibilitySummary],

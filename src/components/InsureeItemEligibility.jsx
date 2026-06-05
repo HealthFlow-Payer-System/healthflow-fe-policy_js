@@ -1,25 +1,25 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import { Box, Grid, Typography } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
+import { Box, Grid, Typography } from "@mui/material";
 import { FormattedMessage, ProgressOrError, PublishedComponent, withModulesManager } from "@openimis/fe-core";
 import {fetchItemEligibility, itemEligibilityClear} from "../actions";
 import Eligibility from "./Eligibility";
 
-const styles = (theme) => ({
-  item: {
-    padding: 10,
-  },
-  header: {
-    padding: 10,
-    paddingBottom: 0,
-    fontWeight: 500,
-  },
-  section: {
-    padding: 10,
-  },
-});
+const StyledItem = styled('div')(({ theme }) => ({
+  padding: 10,
+}));
+
+const StyledHeader = styled(Typography)(({ theme }) => ({
+  padding: 10,
+  paddingBottom: 0,
+  fontWeight: 500,
+}));
+
+const StyledSection = styled('div')(({ theme }) => ({
+  padding: 10,
+}));
 
 class InsureeItemEligibility extends Component {
   onItemSelected = (item) => {
@@ -36,16 +36,16 @@ class InsureeItemEligibility extends Component {
   }
 
   render() {
-    const { classes, isFetching, isFetched, eligibility, error, className } = this.props;
+    const { isFetching, isFetched, eligibility, error, className } = this.props;
     return (
       <div className={className}>
         <Box>
-          <Typography className={classes.header}>
+          <StyledHeader>
             <FormattedMessage module="policy" id="insureeEligibility.item" />
-          </Typography>
+          </StyledHeader>
         </Box>
-        <Grid container className={classes.section} alignItems="center">
-          <Grid item xs={6}>
+        <Grid container component={StyledSection} alignItems="center">
+          <Grid size={6}>
             <Box mr={3}>
               <PublishedComponent
                 pubRef="medical.ItemPicker"
@@ -82,6 +82,8 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ fetchItemEligibility, itemEligibilityClear }, dispatch);
 };
 
+export { StyledItem };
+export { InsureeItemEligibility };
 export default withModulesManager(
-  connect(mapStateToProps, mapDispatchToProps)(withTheme(withStyles(styles)(InsureeItemEligibility)))
+  connect(mapStateToProps, mapDispatchToProps)(InsureeItemEligibility)
 );

@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from "react";
+import _ from "lodash";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import moment from "moment";
 
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 
 import {
   coreAlert,
@@ -30,9 +31,9 @@ import {
 } from "../constants";
 import { policyLabel } from "../utils/utils";
 
-const styles = (theme) => ({
-  page: theme.page,
-});
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme?.page ?? {},
+}));
 
 const POLICY_HEAD_PANEL_CONTRIBUTION_KEY = "policy.Policy.headPanel";
 
@@ -372,6 +373,8 @@ const mapStateToProps = (state) => ({
   mutation: state.policy.mutation,
 });
 
+export { StyledPage };
+export { PolicyForm };
 export default injectIntl(
   withModulesManager(
     withHistory(
@@ -381,7 +384,7 @@ export default injectIntl(
         journalize,
         coreAlert,
         fetchFamily,
-      })(withTheme(withStyles(styles)(PolicyForm)))
+      })(PolicyForm)
     )
   )
 );
