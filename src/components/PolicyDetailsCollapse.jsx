@@ -1,15 +1,16 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
-import { Collapse, Paper, Table } from "@mui/material";
-import { withModulesManager, formatMessage } from "@openimis/fe-core";
+import { Collapse, Paper } from "@mui/material";
+import { withModulesManager, formatMessage, Table } from "@openimis/fe-core";
+import { injectIntl } from "react-intl";
 
-const Root = styled(Collapse)(({ theme }) => ({
+
+const StyledCollapse = styled(Collapse)(({ theme }) => ({
   marginTop: theme.spacing(1),
   marginBottom: theme.spacing(1),
-}));
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  margin: theme.spacing(1),
+  '& .tableContainer': {
+    margin: theme.spacing(1),
+  },
 }));
 
 class PolicyDetailsCollapse extends React.Component {
@@ -50,8 +51,8 @@ class PolicyDetailsCollapse extends React.Component {
     if (!policy) return null;
 
     return (
-      <Root in={open} timeout="auto" unmountOnExit>
-        <StyledPaper elevation={1}>
+      <StyledCollapse in={open} timeout="auto" unmountOnExit>
+        <Paper className="tableContainer" elevation={1}>
           <Table
             module="policy"
             headers={this.getHeaders()}
@@ -60,10 +61,11 @@ class PolicyDetailsCollapse extends React.Component {
             withPagination={false}
             withHeader={true}
           />
-        </StyledPaper>
-      </Root>
+        </Paper>
+      </StyledCollapse>
     );
   }
 }
 
-export default withModulesManager(PolicyDetailsCollapse);
+export { StyledCollapse };
+export default injectIntl(PolicyDetailsCollapse);
