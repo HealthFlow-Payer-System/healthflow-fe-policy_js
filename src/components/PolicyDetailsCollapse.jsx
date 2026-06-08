@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
-import { Collapse, Paper } from "@mui/material";
+import { Collapse, Paper, Table } from "@mui/material";
 import { withModulesManager, formatMessage } from "@openimis/fe-core";
 
 const Root = styled(Collapse)(({ theme }) => ({
