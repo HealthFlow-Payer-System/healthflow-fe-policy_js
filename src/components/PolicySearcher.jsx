@@ -2,12 +2,6 @@ import React, { Component, Fragment } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import { GetIconComponent, ActionMenu } from "@openimis/fe-core";
-const PeopleIcon = GetIconComponent("People")
-const TabIcon = GetIconComponent("Tab")
-const RenewIcon = GetIconComponent("Autorenew")
-const DeleteIcon = GetIconComponent("Delete")
-const SuspendIcon = GetIconComponent("Pause")
 
 import {
   withModulesManager,
@@ -22,6 +16,8 @@ import {
   Searcher,
   PublishedComponent,
   AmountInput,
+  GetIconComponent,
+  ActionMenu,
 } from "@openimis/fe-core";
 import { fetchPolicySummaries, deletePolicy, suspendPolicy } from "../actions";
 import {
@@ -31,6 +27,11 @@ import {
   canSuspendPolicy,
   canRenewPolicy,
 } from "../utils/utils";
+const PeopleIcon = GetIconComponent("People")
+const TabIcon = GetIconComponent("Tab")
+const RenewIcon = GetIconComponent("Autorenew")
+const DeleteIcon = GetIconComponent("Delete")
+const SuspendIcon = GetIconComponent("Pause")
 
 import PolicyFilter from "./PolicyFilter";
 
