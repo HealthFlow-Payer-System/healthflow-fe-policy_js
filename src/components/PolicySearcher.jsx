@@ -306,11 +306,10 @@ class PolicySearcher extends Component {
             )
         : null,
       (policy) => {
-        if (!policy.family) return null;
         return (
           <ActionMenu
             actions={[
-              {
+              !!policy.family && {
                 icon: <PeopleIcon />,
                 tooltip: formatMessage(
                 this.props.intl,
