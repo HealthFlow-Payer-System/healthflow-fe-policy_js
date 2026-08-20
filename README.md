@@ -1,4 +1,9 @@
-# openIMIS Frontend Policy reference module
+# HealthFlow Frontend Policy reference module
+
+> **HealthFlow Payer System — Egypt context**
+>
+> This repository is maintained under [HealthFlow Payer System](https://github.com/HealthFlow-Payer-System), an Egypt-focused health-insurance platform built on openIMIS foundations. Egypt-specific localization is applied at the assembly and module boundaries; consult the repository-specific configuration and deployment documentation for the capabilities enabled here.
+
 This repository holds the files of the openIMIS Frontend Policy reference module.
 It is dedicated to be deployed as a module of [openimis-fe_js](https://github.com/openimis/openimis-fe_js).
 
@@ -59,4 +64,4 @@ None
 - `familyOrInsureePoliciesSummary.orderByExpiryDate`: Allows to set whether you want to sort policies by expiry date in ascending or descending order. Default: __"expiryDate"__ which means ascending order.
 - `familyOrInsureePoliciesSummary.onlyActiveOrLastExpired`: Enables to choose whether you want to display only active and the last expired policies, or all. Default: __true__. 
 - `minimumPolicyEffectiveDate`: Set minimum allowed date for effective date of a policy. Sets minimum for x days before current day. If 0 nothing is changed. Default: 0. 
-- `isEligiblitySummaryEnabled`: Enables/disables remain counts/amounts in enquire. Enabled if true. Default true. 
+- `isEligiblitySummaryEnabled`: Enables/disables remain counts/amounts in enquire. Enabled if true. Default true.
